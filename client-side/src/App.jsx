@@ -1,10 +1,12 @@
+import { TimeSeries } from "./components/TS"
 
 function App() {
 
   return (
     <>
-      <div className='row'>
-        
+      <h1> LLINPAYTIME </h1>
+      <div>
+        <TimeSeries width={1200} height={400} />
       </div>
     </>
   )

@@ -8,7 +8,7 @@ const Map = () => {
   
     useEffect(() => {
       async function fetchShapeFile() {
-        const response = await fetch();
+        const response = await fetch('https://github.com/luismoroco/LlinpayTime/blob/main/client-side/src/data/map/spacm_cpesca/SHAPE/PESCA_CONTROL.shp');
         const arrayBuffer = await response.arrayBuffer();
         const geoJsonData = await shp.parseZip(arrayBuffer);
         setShapeData(geoJsonData);
