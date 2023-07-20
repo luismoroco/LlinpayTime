@@ -1,11 +1,10 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import { useEffect, useState }  from 'react';
 
 const TimeSeries = (props) => {
+    const { width, height, title, index } = props; 
 
-    let csvURL = "https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/client-side/src/data/station_1_2001_PM10.csv"
-
-    const { width, height } = props;
+    let csvURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/client-side/src/data/station_${index}_2001_PM10.csv`
 
     const [data, setData] = useState([]);
 
@@ -80,7 +79,7 @@ const TimeSeries = (props) => {
 
     return (
         <div>
-            <h4> Time Series - Air Quality Madrid -
+            <h4> Time Series - Air Quality Madrid - Station {index}
                 <a>PM10</a>
             </h4>
             <div id='time_series' />
