@@ -4,7 +4,7 @@ import { useEffect, useState }  from 'react';
 const TimeSeries = (props) => {
     const { width, height, title, index } = props; 
 
-    let csvURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/client-side/src/data/station_${index}_2001_PM10.csv`
+    const csvURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/client-side/src/data/station_${index}_2001_PM10.csv`
 
     const [data, setData] = useState([]);
 
@@ -13,6 +13,7 @@ const TimeSeries = (props) => {
             drawChart();
         } else {
             getURLData();
+            console.log(data)
         }
     }, [data])
 
@@ -23,10 +24,8 @@ const TimeSeries = (props) => {
             (() => { }),
             function (d) {
                 const date = d3.timeParse("%Y-%m-%d %H:%M:%S")(d.date);
-                const value = parseFloat(d.PM10);
-                if (!isNaN(value)) { 
-                    tempData.push({ date, value });
-                }
+                const value = isNaN(parseFloat(d.PM10)) ? 0.0 : parseFloat(d.PM10);
+                tempData.push({ date, value });
             }
         )
         setData(tempData);
@@ -79,8 +78,8 @@ const TimeSeries = (props) => {
 
     return (
         <div>
-            <h4> Time Series - Air Quality Madrid - Station {index}
-                <a>PM10</a>
+            <h4> Time Series - Air Quality Madrid - Station {index} - 
+                <a>{title}</a>
             </h4>
             <div id='time_series' />
         </div>

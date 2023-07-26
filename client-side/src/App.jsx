@@ -6,8 +6,16 @@ function App() {
     <>
       <h1> LLINPAYTIME </h1>
       <div>
-        <TimeSeries width={1200} height={400} title={'PM10'} index={'1'}/>
-        <TimeSeries width={1200} height={400} title={'PM10'} index={'2'}/>
+        <TimeSeries width={1200} height={400} title={'PM10'} index={1}/>
+      </div>
+      <div>
+         
+      </div>
+      <div>
+        
+      </div>
+      <div>
+
       </div>
     </>
   )
