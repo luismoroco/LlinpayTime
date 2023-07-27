@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import * as d3 from 'd3';
 
@@ -13,17 +13,19 @@ const selectorOptions = {
 };
 
 function PlotlyTime() {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = useState([]);
 
-  React.useEffect(() => {
-    // Fetch the CSV data
-    d3.csv(rawDataURL, function (err, rawData) {
-      if (err) throw err;
-
-      const formattedData = prepData(rawData);
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedData = await d3.csv(rawDataURL);
+      const formattedData = prepData(fetchedData);
+      
       setData(formattedData);
-    });
+    };
+
+    fetchData();
   }, []);
+
 
   function prepData(rawData) {
     const x = []; 

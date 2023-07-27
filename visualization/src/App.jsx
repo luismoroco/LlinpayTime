@@ -1,7 +1,6 @@
 import React from 'react';
 import Sidebar from './components/Sidebar';
 import StationMapper from './components/StationMapper';
-import WorldMap from './components/WorldMap';
 import Map from './components/Map';
 import PlotlyTime from './components/PlotlyTime';
 
@@ -25,7 +24,7 @@ function App() {
           <StationMapper />
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
 
