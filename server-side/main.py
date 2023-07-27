@@ -1,3 +1,5 @@
-from .app.core import LlinpayBaseServer
+from .app.core.web import FlaskEngineWebCore
 
-app = LlinpayBaseServer(__name__)
+app = FlaskEngineWebCore("001", 5000)
+
+app.init_app()

@@ -14,7 +14,7 @@ class EngineWebBase:
         self.engine_id = engine_id
 
 
-class FlaskEngineWebCore(EngineWebBase, Flask, SetupAndShutdownAppInterface):
+class FlaskEngineWebCore(EngineWebBase, Flask):
     with_support: Optional[List[str]]
     port: Union[int, str]
     debug: bool
@@ -33,9 +33,4 @@ class FlaskEngineWebCore(EngineWebBase, Flask, SetupAndShutdownAppInterface):
         self.debug = debug
 
     def init_app(self) -> None:
-        try:
-            self.run(port=self.port, debug=self.debug)
-
-            loog.info(f"Core running in port: {self.port}")
-        except LlinpayWebCoreException as e:
-            raise LlinpayWebCoreException("Error in WebCore Init", 544, "Flask") from e
+        self.run(port=self.port, debug=self.debug)

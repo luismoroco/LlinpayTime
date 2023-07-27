@@ -1,3 +1,3 @@
 from ._web import FlaskEngineWebCore
 
-__all__ = []
+__all__ = ["FlaskEngineWebCore"]
