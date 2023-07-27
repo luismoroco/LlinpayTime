@@ -10,7 +10,7 @@ import NanPercent from './NanPercent';
 export default function Map() {
   const [selectedOption, setSelectedOption] = useState(contaminants[0]);
   const [selectedStation, setSelectedStation] = useState(null);
- 
+  
   const handleChange = (event) => { 
     setSelectedOption(event.target.value);  
   };
@@ -31,7 +31,7 @@ export default function Map() {
       return 'red';
     }
   };
-
+ 
   const circleIcon = (number) => ({
     path: "M 0,0 m -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0",
     fillColor: getFillColor(number),

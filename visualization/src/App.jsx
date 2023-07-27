@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import StationMapper from './components/StationMapper';
 import WorldMap from './components/WorldMap';
 import Map from './components/Map';
+import PlotlyTime from './components/PlotlyTime';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
           <Sidebar />
         </div>
         <div className="w-3/4">
-        <WorldMap />
+          <PlotlyTime />  
         
         </div>
       </div>
