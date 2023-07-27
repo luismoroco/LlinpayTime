@@ -1,8 +1,7 @@
 import React from 'react';
 import Sidebar from './components/Sidebar';
-import Map from './components/Map';
 import StationMapper from './components/StationMapper';
-import TimeLine from './components/Time';
+import WorldMap from './components/WorldMap';
 
 function App() {
   return (
@@ -12,7 +11,8 @@ function App() {
           <Sidebar />
         </div>
         <div className="w-3/4">
-          <TimeLine />
+        <WorldMap />
+        
         </div>
       </div>
       <div className="w-full h-1/3 flex flex-row">
