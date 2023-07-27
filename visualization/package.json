@@ -17,11 +17,13 @@
     "buffer": "^6.0.3",
     "d3": "^7.8.5",
     "d3-timeseries": "^1.0.1",
+    "dotenv": "^16.3.1",
     "google-maps-react": "^2.0.6",
     "ngx-toastr": "^17.0.2",
     "plotly.js": "^2.25.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

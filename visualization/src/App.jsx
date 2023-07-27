@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from './components/Sidebar';
 import StationMapper from './components/StationMapper';
 import WorldMap from './components/WorldMap';
+import Map from './components/Map';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       </div>
       <div className="w-full h-1/3 flex flex-row">
         <div className="w-1/4 bg-gray-300">
-          MAP
+          <Map />
         </div>
         <div className="w-3/4 flex flex-col">
           <StationMapper />
