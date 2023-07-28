@@ -6,6 +6,7 @@ export const stations = [
     lng: -3.712247222222224,
     lat: 40.423852777777775,
     elevation: 635,
+    num_cont: 6,
     contaminantes: [ 
       {
         name: "BEN",
@@ -76,6 +77,7 @@ export const stations = [
     lng: -3.682319444444445,
     lat: 40.42156388888888,
     elevation: 670,
+    num_cont: 12,
     contaminantes: [
       {
         name: "BEN",
@@ -146,6 +148,7 @@ export const stations = [
     lng: -3.6773555555555553,
     lat: 40.451475,
     elevation: 708,
+    num_cont: 11,
     contaminantes: [
       {
         name: "BEN",
@@ -216,6 +219,7 @@ export const stations = [
     lng: -3.6392333333333333,
     lat: 40.44004722222222,
     elevation: 693,
+    num_cont: 6,
     contaminantes: [
       {
         name: "BEN",
@@ -286,6 +290,7 @@ export const stations = [
     lng: -3.713322222222221,
     lat: 40.347138888888885,
     elevation: 604,
+    num_cont: 6,
     contaminantes: [
       {
         name: "BEN",
@@ -356,6 +361,7 @@ export const stations = [
     lng: -3.7318527777777777,
     lat: 40.39478055555556,
     elevation: 630,
+    num_cont: 11,
     contaminantes: [
       {
         name: "BEN",
@@ -426,6 +432,7 @@ export const stations = [
     lng: -3.7473472222222224,
     lat: 40.41935555555556,
     elevation: 642,
+    num_cont: 15,
     contaminantes: [
       {
         name: "BEN",
@@ -496,6 +503,7 @@ export const stations = [
     lng: -3.580030555555555,
     lat: 40.47692777777778,
     elevation: 621,
+    num_cont: 10,
     contaminantes: [
       {
         name: "BEN",
@@ -566,6 +574,7 @@ export const stations = [
     lng: -3.7031722222222223,
     lat: 40.41920833333333,
     elevation: 659,
+    num_cont: 14,
     contaminantes: [
       {
         name: "BEN",
@@ -636,6 +645,7 @@ export const stations = [
     lng: -3.6453055555555554,
     lat: 40.40794722222222,
     elevation: 685,
+    num_cont: 6,
     contaminantes: [
       {
         name: "BEN",
@@ -706,6 +716,7 @@ export const stations = [
     lng: -3.7071277777777785,
     lat: 40.44554444444445,
     elevation: 698,
+    num_cont: 10,
     contaminantes: [
       {
         name: "BEN",
@@ -776,6 +787,7 @@ export const stations = [
     lng: -3.7115416666666654,
     lat: 40.47822777777778,
     elevation: 674,
+    num_cont: 6,
     contaminantes: [
       {
         name: "BEN",
@@ -846,6 +858,7 @@ export const stations = [
     lng: -3.6515222222222223,
     lat: 40.38815277777777,
     elevation: 677,
+    num_cont: 8,
     contaminantes: [
       {
         name: "BEN",
@@ -916,6 +929,7 @@ export const stations = [
     lng: -3.686825,
     lat: 40.398113888888886,
     elevation: 599,
+    num_cont: 4,
     contaminantes: [
       {
         name: "BEN",
@@ -986,6 +1000,7 @@ export const stations = [
     lng: -3.690366666666667,
     lat: 40.43989722222222,
     elevation: 676,
+    num_cont: 4,
     contaminantes: [
       {
         name: "BEN",
@@ -1056,6 +1071,7 @@ export const stations = [
     lng: -3.682583333333333,
     lat: 40.414444444444435,
     elevation: 662,
+    num_cont: 3,
     contaminantes: [
       {
         name: "BEN",
@@ -1126,6 +1142,7 @@ export const stations = [
     lng: -3.688769444444445,
     lat: 40.46557222222223,
     elevation: 728,
+    num_cont: 4,
     contaminantes: [
       {
         name: "BEN",
@@ -1196,6 +1213,7 @@ export const stations = [
     lng: -3.612116666666666,
     lat: 40.372933333333336,
     elevation: 627,
+    num_cont: 3,
     contaminantes: [
       {
         name: "BEN",
@@ -1266,6 +1284,7 @@ export const stations = [
     lng: -3.5807472222222216,
     lat: 40.46253055555556,
     elevation: 618,
+    num_cont: 8,
     contaminantes: [
       {
         name: "BEN",
@@ -1336,6 +1355,7 @@ export const stations = [
     lng: -3.7187277777777785,
     lat: 40.38496388888889,
     elevation: 604,
+    num_cont: 6,
     contaminantes: [
       {
         name: "BEN",
@@ -1406,6 +1426,7 @@ export const stations = [
     lng: -3.6605027777777774,
     lat: 40.49420833333333,
     elevation: 700,
+    num_cont: 5,
     contaminantes: [
       {
         name: "BEN",
@@ -1476,6 +1497,7 @@ export const stations = [
     lng: -3.774611111111111,
     lat: 40.51805833333333,
     elevation: 615,
+    num_cont: 5,
     contaminantes: [
       {
         name: "BEN",
@@ -1546,6 +1568,7 @@ export const stations = [
     lng: -3.6090722222222222,
     lat: 40.46525000000001,
     elevation: 660,
+    num_cont: 3,
     contaminantes: [
       {
         name: "BEN",
@@ -1616,6 +1639,7 @@ export const stations = [
     lng: -3.6897611111111113,
     lat: 40.50058888888889,
     elevation: 715,
+    num_cont: 4,
     contaminantes: [
       {
         name: "BEN",
@@ -1729,10 +1753,40 @@ export const contaminants = [
   }
 ]
 
-
-
-
-
+export const shapes = [
+  {
+    id: 'triangle',
+    name: 'Triángulo',
+    svg: (
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 19l-7-7 7-7m8 14l-7-7 7-7" />
+      </svg>
+    ),
+  },
+  {
+    id: 'square',
+    name: 'Cuadrado',
+    svg: (
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    ),
+  },
+  {
+    id: 'circle',
+    name: 'Círculo',
+    svg: (
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 4c4.4183 0 8 3.5817 8 8s-3.5817 8-8 8s-8-3.5817-8-8s3.5817-8 8-8z"
+        />
+      </svg>
+    ),
+  },
+];
 
 
 
