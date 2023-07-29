@@ -14,21 +14,21 @@ export default function Map() {
 
   const handleChange = (event) => { 
     setSelectedOption(event.target.value);
-  };
+  }; 
 
   const handleChangeShape = (event) => {
     setSelectedShape(event.target.value);
   };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyChCjtUY6hDi0pU-Ja4fqxfDgCRynD_VNc",
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 
   const getFillColor = (number) => {
     if (number >= 100)
       return 'white'
-    if (number < 5) {
+    if (number < 5) { 
       return 'green';
     } else if (number >= 5 && number < 10) {
       return 'orange';
@@ -45,13 +45,13 @@ export default function Map() {
     else
       return 'M 0,0 m -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0' //circle
   }
-
+ 
   const circleIcon = (number, cont_len, total) => ({
     path: getShape(cont_len, total),
     fillColor: getFillColor(number),
     fillOpacity: 1,
     strokeWeight: 2,
-    scale: 3,
+    scale: 2,
   }); 
 
   const spacing = ""
