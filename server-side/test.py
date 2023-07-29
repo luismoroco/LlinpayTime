@@ -21,3 +21,4 @@ print(csv_loader.load("air-quality", "input", "data", "001.csv"))
 
 data_manag = LLinpayDataManager(dirDataFinderByPath.get_path_base_dir())
 data_manag.verify_file_coherence("air-quality")
+data_manag.preprocess()
