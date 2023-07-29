@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import jsonify
 
 from core import *
+from core.log import loog
 
 load_dotenv()
 
@@ -23,10 +24,12 @@ def index():
 def get_volumes_dir():
     return jsonify(jsonAdapter.export(("name", repo_finder.find())))
 
+port: int = os.getenv("PORT")
+loog.info(f"Server configured in {port} PORT")
 
 if __name__ == "__main__":
     app.run(
         host=str(os.getenv("HOST")),
-        port=int(os.getenv("PORT")),
+        port=port,
         debug=bool(os.getenv("DEBUG")),
     )

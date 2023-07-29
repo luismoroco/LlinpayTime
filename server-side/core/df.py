@@ -10,6 +10,7 @@ from core.exc import LLinpayRepositoryBadFormat, LLinpayRepositoryFileBadFormat
 from core.loader import LLinpayCSVDataLoader
 from core.log import loog
 
+
 class LLinpayDataFrameBase(DataFrame):
     __slots__ = ("name_file",)
 
@@ -138,4 +139,4 @@ class LLinpayDataManager:
         )
 
         loog.info(f"Data preprocessed. Repository {self.repository_id} info exported")
-
+        return True
