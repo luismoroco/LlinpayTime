@@ -21,7 +21,7 @@ export default function Map() {
   };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyChCjtUY6hDi0pU-Ja4fqxfDgCRynD_VNc",
+    googleMapsApiKey: "",
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 
