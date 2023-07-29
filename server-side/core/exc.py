@@ -48,5 +48,15 @@ class LLinpayRepositoryBadFormat(LLinpayBaseExeption):
         )
 
 
-class LLinpayFileNotFound(LLinpayBaseExeption):
-    pass
+class LLinpayRepositoryFileNotFound(LLinpayBaseExeption):
+    def __init__(self, repository_id: str, file_name: str) -> None:
+        super().__init__(
+            f"Check the {repository_id} repository integrity. The {file_name} doesnt exist"
+        )
+
+
+class LLinpayRepositoryFileBadFormat(LLinpayBaseExeption):
+    def __init__(self, file_name: str, headers: List[str]) -> None:
+        super().__init__(
+            f"The {file_name} is found, but hasnt the required header: {headers}"
+        )

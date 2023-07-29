@@ -7,8 +7,8 @@ from core import *
 
 load_dotenv()
 
-repository_finder = DirDataFinderByPath(
-    "volume", str(os.getenv("FOLDER_REPOSITORY_FORMAT"))
+repo_finder = DirDataFinderByPath(
+    str(os.getenv("BASE_VOLUME")), str(os.getenv("FOLDER_REPOSITORY_FORMAT"))
 )
 
 app = WebServerEngine(__name__)
@@ -21,7 +21,7 @@ def index():
 
 @app.route("/volumes")
 def get_volumes_dir():
-    return jsonify(jsonAdapter.export(("name", repository_finder.find())))
+    return jsonify(jsonAdapter.export(("name", repo_finder.find())))
 
 
 if __name__ == "__main__":

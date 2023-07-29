@@ -10,6 +10,13 @@ from core.exc import (
 )
 
 
+class DTORepository:
+    name: str
+    len_stations: int
+    len_variables: int
+    status: bool
+
+
 class DirDataFinderByPath:
     __slots__ = (
         "base_dir_data",
@@ -54,3 +61,6 @@ class DirDataFinderByPath:
         if set(required_folders) != set(self.required_folders_repository):
             raise LLinpayRepositoryBadFormat(repository_id)
         return True
+
+    def get_path_base_dir(self) -> str:
+        return self.base_dir_data
