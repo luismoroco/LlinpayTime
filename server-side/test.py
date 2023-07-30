@@ -1,4 +1,4 @@
-"""import os
+import os
 
 from dotenv import load_dotenv
 
@@ -31,12 +31,12 @@ print(data_manag.handle_repository("air-quality"))
 
 
 dirDataFinderByPath.init_volume()
-print(dirDataFinderByPath.get_repositories())"""
+print(dirDataFinderByPath.get_repositories())
 
-from core.utils import apply_transform_to_df
+from core.utils import transform
 
 print(
-    apply_transform_to_df(
+    transform(
         "/media/lmoroco/D/5TO/TDS/LlinpayTime/server-side/volume/air-quality/output/station-inf/station-prep.csv"
     )
 )

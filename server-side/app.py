@@ -1,38 +1,46 @@
-import json
-from http import HTTPStatus
+from celery import Celery
+from flask import Flask
+from flask_socketio import SocketIO
 
-from dotenv import load_dotenv
-from flask import jsonify
+app = Flask(__name__)
+app.config["SECRET_KEY"] = "chobolin"
+app_socket = SocketIO(app)
 
-from core import WebServerEngine, jsonAdapter
-from core.utils import transform
-from manage import data, volume
+celery = Celery(
+    __name__,
+    broker="redis://127.0.0.1:6379/0",
+    backend="redis://127.0.0.1:6379/0"
+)
 
-load_dotenv()
+@app_socket.on("connect")
+def handle_connect():
+    print("Client connected")
 
-app = WebServerEngine(__name__)
+@app_socket.on("disconnect")
+def handle_disconnect():
+    print("Client disconnected")
 
 
 @app.route("/")
-def index():
-    return "<h1>Hello World</h1>"
+def hello():
+    return "Hello, World!"
 
 
-@app.route("/volumes")
-def get_volumes_dir():
-    res = jsonify(jsonAdapter.export(("name", volume.get_repositories())))
-    res.status_code = HTTPStatus.OK
-    return res
+@celery.task(bind=True)
+def divide(x, y):
+    import time
+    time.sleep(5)
+    return x / y
 
 
-@app.route("/repository/<string:id>")
-def repositorty(id: str):
-    if id in volume.get_repositories():
-        repo_path = data.handle_repository(id)
-        res = jsonify({"id": id, "dirname": repo_path, "info": transform(repo_path)})
-        res.status_code = HTTPStatus.OK
-        return res
+@app_socket.on("exec fx")
+def wait_execute():
+    task = divide.apply_async(args=(1, 3))
+    task_id = task.id
 
-    res = jsonify({"message": "not found"})
-    res.status_code = HTTPStatus.NOT_FOUND
-    return res
+    task_res = task.get()
+    app_socket.emit("res fx", {"id": task_id, "res": task_res})
+
+
+if __name__ == "__main__":
+    app.run(port=5000)
