@@ -71,16 +71,27 @@ class LLinpayDataManager:
     temp_paths: List[str]
     temp_headers: List[str]
     temp_stations_df: DataFrame
-    processed_repositories: List[Tuple[str, bool]]
+    processed_repositories: List[Tuple[str, bool, str]]
     repository_id: str
 
     def __init__(self, base_path: str) -> None:
         self.loader = LLinpayCSVDataLoader(base_path)
         self.checker = LLinpayFileHandler()
         self.base_path = base_path
+        self.processed_repositories = []
 
     @collect_ram_after
-    def verify_file_coherence(self, repository_id: str) -> Optional[bool]:
+    def handle_repository(self, repository_id: str) -> Optional[str]:
+        is_found: Tuple[bool, int] = self.verify_if_exist(repository_id)
+        if is_found[0]:
+            loog.warning(f"{repository_id} preprocessed before")
+            return self.processed_repositories[is_found[1]][2]
+
+        self.verify_file_coherence(repository_id)
+        return self.preprocess()
+
+    @collect_ram_after
+    def verify_file_coherence(self, repository_id: str) -> None:
         repository_path = os.path.join(
             self.base_path, repository_id, "input", "**/*.csv"
         )
@@ -109,10 +120,8 @@ class LLinpayDataManager:
         self.temp_headers = pivot_header[1:]
         self.repository_id = repository_id
 
-        return True
-
     @collect_ram_after
-    def preprocess(self) -> Optional[bool]:
+    def preprocess(self) -> str:
         matriz: List[List[float]] = []
         for file in self.temp_paths:
             _row: List[float] = []
@@ -127,16 +136,37 @@ class LLinpayDataManager:
         for i, var in enumerate(self.temp_headers):
             self.temp_stations_df[var] = [row[i] for row in matriz]
 
+        _path = os.path.join(
+            self.base_path,
+            self.repository_id,
+            "output",
+            "station-inf",
+            "station-prep.csv",
+        )
+
         self.temp_stations_df.to_csv(
-            os.path.join(
-                self.base_path,
-                self.repository_id,
-                "output",
-                "station-inf",
-                "station-prep.csv",
-            ),
+            _path,
             index=False,
         )
 
-        loog.info(f"Data preprocessed. Repository {self.repository_id} info exported")
-        return True
+        loog.info(
+            f"Data preprocessed. Repository {self.repository_id} info exported. Cleaning"
+        )
+        self.set_repository_processed_status(_path)
+        self.clear_manager()
+        return _path
+
+    def verify_if_exist(self, repository_id: str) -> Tuple[bool, int]:
+        for index, (string, state, _) in enumerate(self.processed_repositories):
+            if string == repository_id and state:
+                return (True, index)
+        return (False, -1)
+
+    def set_repository_processed_status(self, _path: str) -> None:
+        self.processed_repositories.append((self.repository_id, True, _path))
+
+    def clear_manager(self) -> None:
+        self.temp_paths = None
+        self.temp_headers = None
+        self.temp_stations_df = None
+        self.repository_id = None

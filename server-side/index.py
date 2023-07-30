@@ -24,12 +24,10 @@ def index():
 def get_volumes_dir():
     return jsonify(jsonAdapter.export(("name", repo_finder.find())))
 
-port: int = os.getenv("PORT")
-loog.info(f"Server configured in {port} PORT")
 
 if __name__ == "__main__":
     app.run(
         host=str(os.getenv("HOST")),
-        port=port,
+        port=int(os.getenv("PORT")),
         debug=bool(os.getenv("DEBUG")),
     )
