@@ -81,7 +81,7 @@ class LLinpayDataManager:
         self.processed_repositories = []
 
     @collect_ram_after
-    def handle_repository(self, repository_id: str) -> Optional[str]:
+    def handle_repository(self, repository_id: str) -> Optional[Tuple[str, List[str]]]:
         is_found: Tuple[bool, int] = self.verify_if_exist(repository_id)
         if is_found[0]:
             loog.warning(f"{repository_id} preprocessed before")
@@ -152,9 +152,11 @@ class LLinpayDataManager:
         loog.info(
             f"Data preprocessed. Repository {self.repository_id} info exported. Cleaning"
         )
+
+        res: Tuple[str, List[str]] = (_path, self.temp_headers)
         self.set_repository_processed_status(_path)
         self.clear_manager()
-        return _path
+        return res
 
     def verify_if_exist(self, repository_id: str) -> Tuple[bool, int]:
         for index, (string, state, _) in enumerate(self.processed_repositories):

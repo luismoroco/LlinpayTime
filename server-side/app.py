@@ -7,14 +7,14 @@ app.config["SECRET_KEY"] = "chobolin"
 app_socket = SocketIO(app)
 
 celery = Celery(
-    __name__,
-    broker="redis://127.0.0.1:6379/0",
-    backend="redis://127.0.0.1:6379/0"
+    __name__, broker="redis://127.0.0.1:6379/0", backend="redis://127.0.0.1:6379/0"
 )
+
 
 @app_socket.on("connect")
 def handle_connect():
     print("Client connected")
+
 
 @app_socket.on("disconnect")
 def handle_disconnect():
@@ -29,6 +29,7 @@ def hello():
 @celery.task(bind=True)
 def divide(x, y):
     import time
+
     time.sleep(5)
     return x / y
 
