@@ -27,6 +27,7 @@ def get_volumes_dir():
 
 @app.route("/repository/<string:id>")
 def repositorty(id: str):
+    print(id)
     if id in volume.get_repositories():
         repo_path, vars = data.handle_repository(id)
         res = jsonify(
@@ -48,6 +49,7 @@ def repositorty(id: str):
 @app.route("/var_per_station/<string:repo_stat_id>")
 def get_var_per_repo(repo_stat_id: str):
     req = repo_stat_id.split("_")
+    print(req)
 
     if req[0] in volume.get_repositories():
         res = jsonify(handle_repo_stat_val(volume.get_path_base_dir(), req))

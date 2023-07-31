@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celery Tasks with SocketIO</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Celery Tasks with SocketIO</h1> 
+    <button id="runTasksBtn">Run Tasks</button>
+    <div id="results"></div>
+
+    <script>
+        const socket = io();
+
+        document.getElementById("runTasksBtn").addEventListener("click", () => {
+            socket.emit("run_tasks");
+        });
+
+        socket.on("tasks_started", (data) => {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            data.task_ids.forEach((task_id) => {
+                const taskDiv = document.createElement("div");
+                taskDiv.id = task_id;
+                taskDiv.textContent = `Task ${task_id}: Running...`;
+                resultsDiv.appendChild(taskDiv);
+            });
+        });
+
+        socket.on("task_result", (data) => {
+            const taskDiv = document.getElementById(data.task_id);
+            if (data.result) {
+                taskDiv.textContent = `Task ${data.task_id}: Completed! Result: ${data.result.result}`;
+            } else if (data.status === "pending") {
+                taskDiv.textContent = `Task ${data.task_id}: Running...`;
+            } else {
+                taskDiv.textContent = `Task ${data.task_id}: Error!`;
+            }
+        });
+    </script>
+</body>
+</html>

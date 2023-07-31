@@ -9,3 +9,7 @@ up:
 .PHONY: down
 down:
 	sudo docker-compose down 
+
+.PHONY: v_up
+v_up:
+	source venv/bin/activate

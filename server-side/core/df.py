@@ -71,7 +71,7 @@ class LLinpayDataManager:
     temp_paths: List[str]
     temp_headers: List[str]
     temp_stations_df: DataFrame
-    processed_repositories: List[Tuple[str, bool, str]]
+    processed_repositories: List[Tuple[str, bool, str, List[str]]]
     repository_id: str
 
     def __init__(self, base_path: str) -> None:
@@ -85,8 +85,10 @@ class LLinpayDataManager:
         is_found: Tuple[bool, int] = self.verify_if_exist(repository_id)
         if is_found[0]:
             loog.warning(f"{repository_id} preprocessed before")
-            return self.processed_repositories[is_found[1]][2]
+            (_, _, repo_path, vars) = self.processed_repositories[is_found[1]]
+            return repo_path, vars
 
+        loog.info(f"Processing files of {repository_id}")
         self.verify_file_coherence(repository_id)
         return self.preprocess()
 
@@ -116,12 +118,16 @@ class LLinpayDataManager:
             if pivot_header != self.loader.header(file):
                 raise LLinpayRepositoryFileBadFormat(file, pivot_header)
 
-        self.temp_paths = files[1:]
+        self.temp_paths = sorted(files[1:], key=lambda path: path.split("/")[-1])
         self.temp_headers = pivot_header[1:]
         self.repository_id = repository_id
 
     @collect_ram_after
     def preprocess(self) -> str:
+        print("paths", self.temp_paths)
+        print("temp headers", self.temp_headers)
+        print("repository_id", self.repository_id)
+
         matriz: List[List[float]] = []
         for file in self.temp_paths:
             _row: List[float] = []
@@ -154,18 +160,18 @@ class LLinpayDataManager:
         )
 
         res: Tuple[str, List[str]] = (_path, self.temp_headers)
-        self.set_repository_processed_status(_path)
+        self.set_repository_processed_status(_path, self.temp_headers)
         self.clear_manager()
         return res
 
     def verify_if_exist(self, repository_id: str) -> Tuple[bool, int]:
-        for index, (string, state, _) in enumerate(self.processed_repositories):
+        for index, (string, state, _, _) in enumerate(self.processed_repositories):
             if string == repository_id and state:
                 return (True, index)
         return (False, -1)
 
-    def set_repository_processed_status(self, _path: str) -> None:
-        self.processed_repositories.append((self.repository_id, True, _path))
+    def set_repository_processed_status(self, _path: str, headers: List[str]) -> None:
+        self.processed_repositories.append((self.repository_id, True, _path, headers))
 
     def clear_manager(self) -> None:
         self.temp_paths = None
