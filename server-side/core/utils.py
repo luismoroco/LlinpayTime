@@ -60,7 +60,7 @@ def apply_fuller_test(X) -> float:
 
 @collect_ram_after
 def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
-    file_name = F"{req[0]}_{req[1]}_{req[2]}.csv"
+    file_name = f"{req[0]}_{req[1]}_{req[2]}.csv"
 
     loog.info(f"Processing: {file_name} file")
 
@@ -77,7 +77,7 @@ def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
 
     _df = _df.resample("D", on="date").mean()
     _df.dropna(subset=[req[2]], inplace=True)
-    
+
     df.rename(columns={req[2]: "data"}, inplace=True)
     res = {
         "repository": req[0],

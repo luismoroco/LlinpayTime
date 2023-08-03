@@ -1,6 +1,7 @@
 import os
+import time
 from http import HTTPStatus
-import time 
+from typing import Dict, List
 
 from celery import Celery
 from dotenv import load_dotenv
@@ -8,9 +9,8 @@ from flask import jsonify
 from flask_cors import CORS
 
 from core import WebServerEngine, jsonAdapter
-from core.utils import transform, handle_repo_stat_val_test
-from manage import data, volume, conn
-from typing import List, Dict
+from core.utils import handle_repo_stat_val_test, transform
+from manage import conn, data, volume
 
 load_dotenv()
 
@@ -25,6 +25,7 @@ celery = Celery(
 CORS(app, origins="*")
 
 celery.conf.update(app.config)
+
 
 @app.route("/")
 def index():
@@ -68,14 +69,14 @@ def enqueue_task(req: List[str], id_file: str):
     cur.execute(query, vals)
     conn.commit()
 
-    return F"{req[0]} -> OK"
+    return f"{req[0]} -> OK"
 
 
 @app.route("/var_station/<string:repo_stat_id>")
 def get_repo_var(repo_stat_id: str):
     req = repo_stat_id.split("$")
-    id_file = F"{req[0]}_{req[1]}_{req[2]}.csv"
-    
+    id_file = f"{req[0]}_{req[1]}_{req[2]}.csv"
+
     if req[0] in volume.get_repositories():
         query = "SELECT * FROM repo_val_mem WHERE id_rep_val = %s;"
         vals = (id_file,)
@@ -91,14 +92,14 @@ def get_repo_var(repo_stat_id: str):
                 "p_value": row[4],
                 "trend": row[5],
                 "path_out": row[6],
-                "status_task": row[7]
+                "status_task": row[7],
             }
 
             res = jsonify(res_dict)
             res.status_code = HTTPStatus.OK
-            
-            return res 
-        
+
+            return res
+
         task = enqueue_task.delay(req, id_file)
 
         query = "INSERT INTO repo_val_mem (id_task_redis, id_rep_val) VALUES (%s, %s);"
@@ -106,22 +107,16 @@ def get_repo_var(repo_stat_id: str):
         cur.execute(query, vals)
         conn.commit()
 
-        res_dict = {
-            "id": task.id,
-            "status": "Scheduled"
-        }
+        res_dict = {"id": task.id, "status": "Scheduled"}
 
         res = jsonify(res_dict)
-        res.status_code = HTTPStatus.OK 
-            
-        return res 
-    
-    res_dict = {
-        "id": -1,
-        "message": F"{req[0]} is not a repository"  
-    }
+        res.status_code = HTTPStatus.OK
+
+        return res
+
+    res_dict = {"id": -1, "message": f"{req[0]} is not a repository"}
 
     res = jsonify(res_dict)
     res.status_code = HTTPStatus.NOT_FOUND
 
-    return res 
+    return res
