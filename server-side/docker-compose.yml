@@ -6,3 +6,16 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+
+  db:
+    image: docker.io/postgres:latest
+    container_name: db
+    restart: always
+    env_file: .env 
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - ./config/postgres:/docker-entrypoint-initdb.d 
+    ports:
+      - '5432:5432'

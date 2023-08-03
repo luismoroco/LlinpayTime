@@ -4,7 +4,7 @@ import StationMapper from './components/StationMapper';
 import Map from './components/Map';
 import PlotlyTime from './components/PlotlyTime';
 
-function App() {
+function App() { 
   return (
     <div className="w-full h-full flex flex-col" style={{ height: '100vh', width: '100vw' }}>
       <div className="w-full h-2/3 flex flex-row">
@@ -12,9 +12,9 @@ function App() {
           <Sidebar />
         </div>
         <div className="w-3/4">
-          <PlotlyTime />  
-        
-        </div>
+          <PlotlyTime />
+          
+        </div> 
       </div>
       <div className="w-full h-1/3 flex flex-row">
         <div className="w-1/4 bg-gray-300">
@@ -24,7 +24,7 @@ function App() {
           <StationMapper />
         </div>
       </div>
-    </div> 
+    </div>
   );
 }
 

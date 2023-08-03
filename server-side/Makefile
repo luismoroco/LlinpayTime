@@ -10,6 +10,10 @@ up:
 down:
 	sudo docker-compose down 
 
-.PHONY: v_up
-v_up:
+.PHONY: venvp
+venvp:
 	source venv/bin/activate
+
+.PHONY: ucelery
+ucelery:
+	celery -A app.celery worker --loglevel=info

@@ -1,6 +1,5 @@
-import glob
 import os
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Tuple
 
 from pandas import DataFrame, read_csv
 from sklearn.linear_model import LinearRegression
@@ -9,9 +8,7 @@ from statsmodels.tsa.stattools import adfuller
 from core.decorat import collect_ram_after
 from core.log import loog
 
-memory: List[Tuple[str, str, Dict]] = []
-
-METHOD_FILL = "interpolate"
+METHOD_FILL = "DELETE"
 
 
 @collect_ram_after
@@ -62,46 +59,35 @@ def apply_fuller_test(X) -> float:
 
 
 @collect_ram_after
-def find_in_memo(_repo: str, _name: str) -> int:
-    for index, (repo, id, _) in enumerate(memory):
-        if _repo == repo and id == _name:
-            return index
-    return -1
+def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
+    file_name = F"{req[0]}_{req[1]}_{req[2]}.csv"
 
+    loog.info(f"Processing: {file_name} file")
 
-@collect_ram_after
-def handle_repo_stat_val(path_base: str, req: List[str]) -> Dict:
-    file_name = f"{req[1]}_{req[2]}.csv"
-    found = find_in_memo(req[0], file_name)
+    _path = os.path.join(path_base, req[0], "input", "data", f"{req[1]}.csv")
+    _out_path = os.path.join(path_base, req[0], "load", file_name)
 
-    if found == -1:
-        loog.info(f"Processing: {file_name} file")
-        _path = os.path.join(path_base, req[0], "input", "data", f"{req[1]}.csv")
-        _out_path = os.path.join(path_base, req[0], "load", file_name)
+    df = read_csv(_path, usecols=["date", req[2]], parse_dates=["date"])
 
-        df = read_csv(_path, usecols=["date", req[2]], parse_dates=["date"])
+    _df = df.copy()
+    _df.dropna(subset=[req[2]], inplace=True)
 
-        _df = df.copy()
-        _df[req[2]].interpolate(inplace=True)
+    X = _df.index.values.reshape(-1, 1)
+    y = _df[req[2]]
 
-        X = _df.index.values.reshape(-1, 1)
-        y = _df[req[2]]
+    _df = _df.resample("D", on="date").mean()
+    _df.dropna(subset=[req[2]], inplace=True)
+    
+    df.rename(columns={req[2]: "data"}, inplace=True)
+    res = {
+        "repository": req[0],
+        "path": _out_path,
+        "method": METHOD_FILL,
+        "trend": "{:.5f}".format(apply_linear_regresion(X, y)),
+        "p-value": "{:.5f}".format(apply_fuller_test(_df[req[2]])),
+    }
 
-        _df = _df.resample("D", on="date").mean()
-        _df.dropna(subset=[req[2]], inplace=True)
-        df.rename(columns={req[2]: 'data'}, inplace=True)
-        res = {
-            "repository": req[0],
-            "path": _out_path,
-            "method": METHOD_FILL,
-            "trend": "{:.5f}".format(apply_linear_regresion(X, y)),
-            "p-value": "{:.5f}".format(apply_fuller_test(_df[req[2]])),
-        }
+    df.to_csv(_out_path, index=False)
+    loog.info(f"Exporting: {file_name} file")
 
-        df.to_csv(_out_path, index=False)
-
-        memory.append((req[0], file_name, res))
-        return res
-
-    loog.warning(f"{file_name} preprocessed before")
-    return memory[found][2]
+    return res

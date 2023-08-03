@@ -11,7 +11,7 @@ const customStyles = {
       borderColor: '#4F46E5',
     },
   }),
-};
+}; 
 
 const options = [
   { value: 'option1', label: <CheckCircleIcon className="w-5 h-5" /> },

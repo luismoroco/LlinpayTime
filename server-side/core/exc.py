@@ -60,3 +60,8 @@ class LLinpayRepositoryFileBadFormat(LLinpayBaseExeption):
         super().__init__(
             f"The {file_name} is found, but hasnt the required header: {headers}"
         )
+
+
+class LLinpayTableNotFound(LLinpayBaseExeption):
+    def __init__(self, table: str) -> None:
+        super().__init__(f"The table {table} doesn't exist")

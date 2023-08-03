@@ -12,16 +12,16 @@ export default function Map() {
   const [selectedStation, setSelectedStation] = useState(null);
   const [selectedShape, setSelectedShape] = useState(shapes[0].id);
 
-  const handleChange = (event) => { 
+  const handleChange = (event) => {  
     setSelectedOption(event.target.value);
   }; 
 
   const handleChangeShape = (event) => {
-    setSelectedShape(event.target.value);
+    setSelectedShape(event.target.value); 
   };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyChCjtUY6hDi0pU-Ja4fqxfDgCRynD_VNc",
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 

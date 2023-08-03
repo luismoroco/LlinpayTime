@@ -124,10 +124,6 @@ class LLinpayDataManager:
 
     @collect_ram_after
     def preprocess(self) -> str:
-        print("paths", self.temp_paths)
-        print("temp headers", self.temp_headers)
-        print("repository_id", self.repository_id)
-
         matriz: List[List[float]] = []
         for file in self.temp_paths:
             _row: List[float] = []
