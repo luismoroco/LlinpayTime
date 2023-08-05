@@ -18,4 +18,8 @@ CREATE TABLE IF NOT EXISTS task_cache (
   status_task BOOLEAN DEFAULT FALSE
 );
 
-
+CREATE TABLE IF NOT EXISTS station_info (
+  id SERIAL PRIMARY KEY,
+  id_repository VARCHAR(50) NOT NULL UNIQUE,
+  json_info TEXT 
+);

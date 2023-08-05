@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState} from 'react';
 import Title from './Title';
 import { GoogleMap, Marker, useLoadScript, InfoWindow } from "@react-google-maps/api";
 import "../components/style/map.css";
@@ -7,18 +7,19 @@ import { contaminants, stations, shapes } from '../data/air_quality';
 import { ArrowSmallUpIcon, CursorArrowRippleIcon, IdentificationIcon } from '@heroicons/react/24/solid'
 import NanPercent from './NanPercent';
 
-export default function Map() { 
+export default function Map({setStat, setVar}) {
   const [selectedOption, setSelectedOption] = useState(contaminants[0]);
   const [selectedStation, setSelectedStation] = useState(null);
-  const [selectedShape, setSelectedShape] = useState(shapes[0].id);
 
-  const handleChange = (event) => {  
+  const handleChangeContaminant = (event) => {
     setSelectedOption(event.target.value);
-  }; 
-
-  const handleChangeShape = (event) => {
-    setSelectedShape(event.target.value); 
+    setVar(event.target.value);
   };
+
+  const handleChangeStation = (id, name) => {
+    setSelectedStation({id, name});
+    setStat(id);
+  }
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyChCjtUY6hDi0pU-Ja4fqxfDgCRynD_VNc",
@@ -68,7 +69,7 @@ export default function Map() {
         <div className='w-1/5'>
           <select
             value={selectedOption}
-            onChange={handleChange}
+            onChange={handleChangeContaminant}
             className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
           >
             {contaminants.map((option) => (
@@ -105,7 +106,7 @@ export default function Map() {
               key={id}
               position={{ lat, lng }}
               icon={circleIcon(percentNull, num_cont, contaminantes.length)}
-              onClick={() => setSelectedStation({ id, name })}
+              onClick={() => handleChangeStation( id, name )}
             >
               {selectedStation?.id === id && (
                 <InfoWindow onCloseClick={() => setSelectedStation(null)}>

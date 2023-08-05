@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from "d3";
 
-const BoxPlot = ({ width, height }) => {
+const BoxPlot = ({ width, height, color, data }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const BoxPlot = ({ width, height }) => {
       .attr("height", (y(q1) - y(q3)))
       .attr("width", boxWidth)
       .attr("stroke", "black")
-      .style("fill", "#69b3a2")
+      .style("fill", color)
 
     // show median, min and max horizontal lines
     svg
