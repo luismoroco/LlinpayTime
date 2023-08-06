@@ -1,7 +1,5 @@
-import os
-import time
 from http import HTTPStatus
-from typing import Dict, List
+from typing import List
 import json
 
 from celery import Celery
@@ -127,7 +125,7 @@ def get_repo_var(repo_stat_id: str):
 
         res = jsonify(res_dict)
         res.status_code = HTTPStatus.OK
-           
+
         return res
 
     res_dict = {"id": -1, "message": f"{req[0]} is not a repository"}
@@ -137,27 +135,29 @@ def get_repo_var(repo_stat_id: str):
 
     return res
 
+
 @app.route("/get_csv", methods=["GET"])
 def get_csv_t():
     if not request.is_json:
-        res = jsonify({
-           "error": "Data NOT found"
-        })
+        res = jsonify({"error": "Data NOT found"})
         res.status_code = HTTPStatus.NOT_FOUND
 
-        return res 
-    
-    data = request.json 
+        return res
+
+    data = request.json
     iFile = data.get("path")
-    
-    return send_file(iFile, as_attachment=True) 
+
+    return send_file(iFile, as_attachment=True)
 
 
 @app.route("/get_csv_test", methods=["GET"])
 def get_test():
-    iFile = "/media/lmoroco/D2/5TO/TDS/LlinpayTime/server-side/volume/air-quality-madrid/load/air-quality-madrid_28079004_PM10.csv"
-    return send_file(iFile, as_attachment=True)
+    file = (
+        "/media/lmoroco/D2/5TO/TDS/LlinpayTime/server-side/volume/air-quality-madrid/load/air-quality"
+        "-madrid_28079004_PM10.csv"
+    )
+    return send_file(file, as_attachment=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=False)

@@ -8,7 +8,7 @@ from flask import jsonify
 from flask_cors import CORS
 
 from core import WebServerEngine, jsonAdapter
-from core.utils import handle_repo_stat_val, transform
+from core.utils import transform
 from manage import conn, data, volume
 
 load_dotenv()

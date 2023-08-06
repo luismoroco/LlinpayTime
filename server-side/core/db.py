@@ -2,11 +2,11 @@ from typing import Any, List, Optional, Union
 
 from psycopg2 import connect
 
-from .abc import ILLinpayConector, ILLinpayQueryAsyncTableEngine
+from .abc import ILLinpayConector
 from .exc import LLinpayTableNotFound
 
 
-class LLinpayDataConectorBase:
+class LLinpayDataConnectorBase:
     port: Union[str, int]
     host: Union[str, int]
     __user: str
@@ -14,7 +14,7 @@ class LLinpayDataConectorBase:
     db_name: str
 
 
-class LLinpayPostgresConnector(LLinpayDataConectorBase, ILLinpayConector):
+class LLinpayPostgresConnector(LLinpayDataConnectorBase, ILLinpayConector):
     __slots__ = ("connection",)
 
     connection: Union[Any, None]

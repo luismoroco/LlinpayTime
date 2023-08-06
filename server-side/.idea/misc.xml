@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="Black">
+    <option name="enabledOnReformat" value="true" />
+    <option name="pathToExecutable" value="$USER_HOME$/.local/bin/black" />
+    <option name="sdkUUID" value="d09e9b16-fb7e-40a8-bb21-c924d85d3022" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (server-side)" project-jdk-type="Python SDK" />
 </project>

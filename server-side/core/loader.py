@@ -32,8 +32,10 @@ class LLinpayCSVDataLoader(LLinpayDataLoaderBase, ILLinpayFileLoader):
 
         return read_csv(file_path)
 
-    def direct_load(self, path_abs: str, **kargs) -> DataFrame:
+    @staticmethod
+    def direct_load(path_abs: str, **kargs) -> DataFrame:
         return read_csv(path_abs, **kargs)
 
-    def header(self, path_abs: str, **kargs) -> List[str]:
+    @staticmethod
+    def header(path_abs: str, **kargs) -> List[str]:
         return read_csv(path_abs, **kargs).columns.to_list()

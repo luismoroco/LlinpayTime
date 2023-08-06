@@ -1,6 +1,15 @@
 from typing import List, Optional, Union
 
-__all__ = ["LLinpayDataDirBaseNotFound"]
+__all__ = [
+    "LLinpayDataDirBaseNotFound",
+    "LLinpayRepositoryFileNotFound",
+    "LLinpayTableNotFound",
+    "LLinpayRepositoryBadFormat",
+    "LLinpayRepositoryFileBadFormat",
+    "LLinpayBaseDirDataNotProvided",
+    "LLinpayRepositoryNotFound",
+    "LLinpayVolumeDirCantBeEmptyError"
+]
 
 
 class LLinpayBaseExeption(Exception):

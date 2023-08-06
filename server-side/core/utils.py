@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 from pandas import DataFrame, read_csv
 from sklearn.linear_model import LinearRegression
@@ -46,15 +46,15 @@ def transform(path) -> List[Dict]:
 
 
 @collect_ram_after
-def apply_linear_regresion(X, y) -> float:
+def apply_linear_regression(x, y) -> float:
     lr = LinearRegression()
-    lr.fit(X, y)
+    lr.fit(x, y)
     return lr.coef_[0]
 
 
 @collect_ram_after
-def apply_fuller_test(X) -> float:
-    res = adfuller(X)
+def apply_fuller_test(x) -> float:
+    res = adfuller(x)
     return res[1]
 
 
@@ -72,7 +72,7 @@ def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
     _df = df.copy()
     _df.dropna(subset=[req[2]], inplace=True)
 
-    X = _df.index.values.reshape(-1, 1)
+    x = _df.index.values.reshape(-1, 1)
     y = _df[req[2]]
 
     _df = _df.resample("D", on="date").mean()
@@ -83,7 +83,7 @@ def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
         "repository": req[0],
         "path": _out_path,
         "method": METHOD_FILL,
-        "trend": "{:.5f}".format(apply_linear_regresion(X, y)),
+        "trend": "{:.5f}".format(apply_linear_regression(x, y)),
         "p-value": "{:.5f}".format(apply_fuller_test(_df[req[2]])),
     }
 

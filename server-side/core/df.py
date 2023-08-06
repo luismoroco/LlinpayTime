@@ -103,8 +103,9 @@ class LLinpayDataManager:
             raise LLinpayRepositoryBadFormat(repository_id)
 
         self.temp_stations_df = self.loader.direct_load(
-            files[0], sep=",", dtype={"id": str}
+            path_abs=files[0], sep=",", dtype={"id": str}
         )
+
         data_files_needed = [
             f"{item}.csv" for item in self.temp_stations_df["id"].unique()
         ]
@@ -163,14 +164,14 @@ class LLinpayDataManager:
     def verify_if_exist(self, repository_id: str) -> Tuple[bool, int]:
         for index, (string, state, _, _) in enumerate(self.processed_repositories):
             if string == repository_id and state:
-                return (True, index)
-        return (False, -1)
+                return True, index
+        return False, -1
 
     def set_repository_processed_status(self, _path: str, headers: List[str]) -> None:
         self.processed_repositories.append((self.repository_id, True, _path, headers))
 
     def clear_manager(self) -> None:
-        self.temp_paths = None
+        self.temp_paths = [None]
         self.temp_headers = None
         self.temp_stations_df = None
         self.repository_id = None
