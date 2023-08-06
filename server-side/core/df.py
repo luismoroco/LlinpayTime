@@ -171,7 +171,7 @@ class LLinpayDataManager:
         self.processed_repositories.append((self.repository_id, True, _path, headers))
 
     def clear_manager(self) -> None:
-        self.temp_paths = [None]
+        self.temp_paths = None
         self.temp_headers = None
         self.temp_stations_df = None
         self.repository_id = None

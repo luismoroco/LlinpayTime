@@ -31,7 +31,7 @@ def index():
     return "<h1>Welcome to LLinpay Framework</h1>"
 
 
-@app.route("/volumes")
+@app.route("/volumes", methods=["GET"])
 def get_volumes_dir():
     res = jsonify(jsonAdapter.export(("name", volume.get_repositories())))
     res.status_code = HTTPStatus.OK
@@ -83,7 +83,7 @@ def enqueue_task(req: List[str], id_file: str):
     cur.execute(query, vals)
     conn.commit()
 
-    return f"{req[0]} -> OK"
+    return f"{req[0]} with {req[1]} preprocessed -> OK"
 
 
 @app.route("/var_station/<string:repo_stat_id>", methods=["GET"])
@@ -125,14 +125,12 @@ def get_repo_var(repo_stat_id: str):
 
         res = jsonify(res_dict)
         res.status_code = HTTPStatus.OK
-
         return res
 
     res_dict = {"id": -1, "message": f"{req[0]} is not a repository"}
 
     res = jsonify(res_dict)
     res.status_code = HTTPStatus.NOT_FOUND
-
     return res
 
 
@@ -141,7 +139,6 @@ def get_csv_t():
     if not request.is_json:
         res = jsonify({"error": "Data NOT found"})
         res.status_code = HTTPStatus.NOT_FOUND
-
         return res
 
     data = request.json
@@ -153,7 +150,7 @@ def get_csv_t():
 @app.route("/get_csv_test", methods=["GET"])
 def get_test():
     file = (
-        "/media/lmoroco/D2/5TO/TDS/LlinpayTime/server-side/volume/air-quality-madrid/load/air-quality"
+        "/media/lmoroco/D/5TO/TDS/LlinpayTime/server-side/volume/air-quality-madrid/load/air-quality"
         "-madrid_28079004_PM10.csv"
     )
     return send_file(file, as_attachment=True)

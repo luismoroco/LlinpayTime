@@ -8,7 +8,7 @@ __all__ = [
     "LLinpayRepositoryFileBadFormat",
     "LLinpayBaseDirDataNotProvided",
     "LLinpayRepositoryNotFound",
-    "LLinpayVolumeDirCantBeEmptyError"
+    "LLinpayVolumeDirCantBeEmptyError",
 ]
 
 

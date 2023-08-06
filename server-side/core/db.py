@@ -61,7 +61,7 @@ class QueryEngineBase:
         self.table = db
         self.table = cursor
         self.query = (
-            f"SELECT EXISTS (SELECT 1 FROM {db}.tables WHERE table_name = '{table}')"
+            F"SELECT EXISTS (SELECT 1 FROM {db}.tables WHERE table_name = '{table}')"
         )
         self.verify()
 

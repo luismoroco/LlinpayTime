@@ -34,7 +34,7 @@ def transform(path) -> List[Dict]:
         station: Dict = {
             "id": row["id"],
             "name": row["name"],
-            "lon": row["lon"],
+            "lng": row["lon"],
             "lat": row["lat"],
             "len_vars": counter,
             "vars": vars,
@@ -83,8 +83,8 @@ def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
         "repository": req[0],
         "path": _out_path,
         "method": METHOD_FILL,
-        "trend": "{:.5f}".format(apply_linear_regression(x, y)),
-        "p-value": "{:.5f}".format(apply_fuller_test(_df[req[2]])),
+        "trend": "{:.8f}".format(apply_linear_regression(x, y)),
+        "p-value": "{:.8f}".format(apply_fuller_test(_df[req[2]])),
     }
 
     df.to_csv(_out_path, index=False)

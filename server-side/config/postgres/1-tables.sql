@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS repo_val_mem (
   id_rep_val VARCHAR(50) NOT NULL UNIQUE,
   method_fill VARCHAR(25),
   p_value FLOAT,
-  trend FLOAT, 
+  trend FLOAT,
   path_out VARCHAR(255),
   status_task BOOLEAN DEFAULT FALSE
 );
@@ -21,5 +21,5 @@ CREATE TABLE IF NOT EXISTS task_cache (
 CREATE TABLE IF NOT EXISTS station_info (
   id SERIAL PRIMARY KEY,
   id_repository VARCHAR(50) NOT NULL UNIQUE,
-  json_info TEXT 
+  json_info TEXT
 );
