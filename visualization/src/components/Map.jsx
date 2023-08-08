@@ -2,21 +2,21 @@ import React, { useMemo, useState} from 'react';
 import Title from './Title';
 import { GoogleMap, Marker, useLoadScript, InfoWindow } from "@react-google-maps/api";
 import "../components/style/map.css";
-import { contaminants, stations, shapes } from '../data/air_quality';
 
-import { ArrowSmallUpIcon, CursorArrowRippleIcon, IdentificationIcon } from '@heroicons/react/24/solid'
+import { circleIcon, spacing } from './utils';
+import { CursorArrowRippleIcon, IdentificationIcon } from '@heroicons/react/24/solid'
 import NanPercent from './NanPercent';
 
-export default function Map({setStat, setVar}) {
-  const [selectedOption, setSelectedOption] = useState(contaminants[0]);
+export default function Map({setStat, setVar, repository, variables, stationes}) {
+  const [selectedOption, setSelectedOption] = useState(variables[0]);
   const [selectedStation, setSelectedStation] = useState(null);
 
   const handleChangeContaminant = (event) => {
     setSelectedOption(event.target.value);
     setVar(event.target.value);
-  };
-
-  const handleChangeStation = (id, name) => {
+  }; 
+ 
+  const handleChangeStation = (id, name) => { 
     setSelectedStation({id, name});
     setStat(id);
   }
@@ -26,36 +26,6 @@ export default function Map({setStat, setVar}) {
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 
-  const getFillColor = (number) => {
-    if (number >= 100)
-      return 'white'
-    if (number < 5) { 
-      return 'green';
-    } else if (number >= 5 && number < 10) {
-      return 'orange';
-    } else {
-      return 'red';
-    }
-  };
-
-  const getShape = (cont_len, total) => {
-    if (cont_len <= 0.3 * total)
-      return 'M 0,0 l -5,8 l 10,0 z' // triangle
-    if (cont_len > 0.3 * total && cont_len <= 0.6 * total)
-      return 'M -5,-5 l 10,0 l 0,10 l -10,0 z' // square
-    else
-      return 'M 0,0 m -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0' //circle
-  }
- 
-  const circleIcon = (number, cont_len, total) => ({
-    path: getShape(cont_len, total),
-    fillColor: getFillColor(number),
-    fillOpacity: 1,
-    strokeWeight: 2,
-    scale: 2,
-  }); 
-
-  const spacing = ""
 
   return (
     <>
@@ -72,9 +42,9 @@ export default function Map({setStat, setVar}) {
             onChange={handleChangeContaminant}
             className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
           >
-            {contaminants.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.value}
+            {variables.map((option) => (
+              <option key={option.name} value={option.name}>
+                {option.name}
               </option>
             ))}  
           </select>
@@ -95,17 +65,17 @@ export default function Map({setStat, setVar}) {
           zoomControl: false
         }}
       > 
-        {isLoaded && stations.map(({ id, elevation, lat, lng, contaminantes, name, num_cont }) => {
-          const contaminant = contaminantes.find(
+        {isLoaded && stationes.map(({ id, lat, lng, vars, name, len_vars }) => {
+          const contaminant = vars.find(
             (contaminante) => contaminante.name === selectedOption
           );
-          const percentNull = contaminant?.percent_null ?? 100.00;
+          const percentNull = contaminant?.percent_nan ?? 100.00;
 
           return (
             <Marker
               key={id}
               position={{ lat, lng }}
-              icon={circleIcon(percentNull, num_cont, contaminantes.length)}
+              icon={circleIcon(percentNull, len_vars, vars.length)}
               onClick={() => handleChangeStation( id, name )}
             >
               {selectedStation?.id === id && (
@@ -120,11 +90,6 @@ export default function Map({setStat, setVar}) {
                       <CursorArrowRippleIcon className='mr-3 w-7 h-7' />
                       <p className='font-medium'> {`${selectedOption}:  ${spacing}`}</p>
                       <NanPercent nan={Number(percentNull.toFixed(3))} />
-                    </div>
-
-                    <div className='w-full flex flex-row items-center'>
-                      <ArrowSmallUpIcon className='mr-3 w-7 h-7' />
-                      <p> {elevation} </p>
                     </div>
                   </div>
                 </InfoWindow>

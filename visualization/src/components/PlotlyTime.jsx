@@ -12,7 +12,7 @@ const selectorOptions = {
   buttons: [
     // ...
   ],
-};
+}; 
 
 function PlotlyTime({color}) {
   const [data, setData] = useState([]);
