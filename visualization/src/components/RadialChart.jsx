@@ -60,7 +60,7 @@ const style = {
 
 const RadialBarChartC = () => {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer  width="100%" height="100%">
       <RadialBarChart
         cx="50%"
         cy="50%"

@@ -62,8 +62,8 @@ export default function Map({setStat, setVar, repository, variables, stationes})
         zoom={10}
         mapContainerStyle={{ width: '100%', height: '100%' }}
         options={{
-          zoomControl: false
-        }}
+          zoomControl: false 
+        }} 
       > 
         {isLoaded && stationes.map(({ id, lat, lng, vars, name, len_vars }) => {
           const contaminant = vars.find(

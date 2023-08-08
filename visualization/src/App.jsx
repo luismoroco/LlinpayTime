@@ -16,13 +16,17 @@ function App() {
 
   const [stations, setStations] = useState([]);
   const [vars, setVars] = useState([]);
+
+  const [station, setStation] = useState("");
+  const [stationName, setStationName] = useState("");
+  const [stationBar, setStationBar] = useState([]);
   
   useEffect(() => {
     const fetch = async () => { 
       const data = await Axios.get(
         `http://127.0.0.1:5000/repository/${repository}`
       );
-
+ 
       setStations(data.data.info);
       setVars(data.data.vars);
     }
@@ -30,17 +34,25 @@ function App() {
     fetch(); 
   }, [repository]);
 
+  useEffect(() => {
+    const info = stations.find(item => item.id === station);
+    if (info) {
+      setStationName(info.name);
+      setStationBar(info.vars);
+    }
+  }, [station])
+
  
   const x = 0;
-  const [station, setStation] = useState(null);
-  const [variable, setVariable] = useState(null);
+  
+  const [variable, setVariable] = useState(null); 
 
   return (
     <div className="w-full h-full flex flex-col bg-slate-300" style={{ height: '100vh', width: '100vw' }}>
       <Modal setMainRepo={setRepository} modal={modal} setModal={setModal} />
-      <div className="w-full h-2/3 flex flex-row">
+      <div className="w-full h-2/3 flex flex-row ">
         <div className="w-1/4 bg-gray-100">
-          <Sidebar repository={repository} setModal={setModal} />
+          <Sidebar repository={repository} setModal={setModal} stat_name={stationName} stat_var={stationBar}/>
         </div>
         <div className="w-3/4">
           <RadialBarChartC />
@@ -51,7 +63,7 @@ function App() {
           <Map stationes={stations} setStat={setStation} setVar={setVariable} repository={repository} variables={vars} />
         </div>
         <div className="w-3/4 flex flex-col">
-          MAPPER
+          <StationMapper />
         </div>
       </div>
     </div>

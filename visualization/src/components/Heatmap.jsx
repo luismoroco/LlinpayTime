@@ -17,7 +17,7 @@ const generateRandomData = () => {
   return data;
 };
 
-const Heatmap = () => {
+const HeatmapC = () => {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
@@ -66,4 +66,4 @@ const Heatmap = () => {
   );
 };
 
-export default Heatmap;
+export default HeatmapC;
