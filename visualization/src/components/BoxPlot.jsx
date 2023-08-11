@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import * as d3 from 'd3';
 
-const rawDataURL = 'https://raw.githubusercontent.com/plotly/datasets/master/2016-weather-data-seattle.csv';
-const yField = 'Mean_TemperatureC';
-
-function BoxPlotPlotly() {
+function BoxPlotPlotly({color, stat, varia}) {
     const [data, setData] = useState([]);
+
+    var rawDataURL;
+    var yField; 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,8 +16,12 @@ function BoxPlotPlotly() {
             setData(formattedData);
         };
 
-        fetchData();
-    }, []);
+        if (stat && varia) {
+            rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${stat}_${varia}.csv`;
+            yField = varia;
+            fetchData();
+        }
+    }, [stat, varia]);
 
     function prepData(rawData) {
         const y = rawData.map(datum => datum[yField]);
@@ -27,7 +31,13 @@ function BoxPlotPlotly() {
             boxpoints: 'outliers',
             jitter: 0.3,
             pointpos: -1.8,
-            type: 'box'
+            type: 'box',
+            marker: {
+                color: 'rgb(55, 56, 7)',
+            },
+            line: {
+                color: color,
+            }
         }];
     }
 
@@ -40,8 +50,8 @@ function BoxPlotPlotly() {
             <Plot
                 data={data}
                 layout={{
-                    width: 300,
-                    height: 165,
+                    width: 350,
+                    height: 190,
                     autosize: true,
                     xaxis: {
                         showgrid: false,

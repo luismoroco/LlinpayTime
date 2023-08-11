@@ -99,11 +99,6 @@ def get_repo_var(repo_stat_id: str):
         row = cur.fetchone()
 
         if row:
-            #data = []
-            #if row[7] == True:
-            #    df = load_csv(row[6])
-            #    data = df.to_dict(orient='records')
-
             res_dict = {
                 "info": {
                     "id": row[0],
@@ -116,8 +111,7 @@ def get_repo_var(repo_stat_id: str):
                     "status_task": row[7],
                     "from_d": row[8],
                     "to_d": row[9],
-                },
-                #"data": data,
+                }
             }
 
             res = jsonify(res_dict)

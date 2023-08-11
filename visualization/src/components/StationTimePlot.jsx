@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PlotlyTime from './PlotlyTime';
 import BoxPlot from './Box';
 import Axios from "axios";
+import BoxPlotPlotly from './BoxPlot';
 
 export default function StationTimePlot({ color, stations }) {
   const [station, setStation] = useState("");
   const [vari, setVari] = useState("");
   const [vars, setVars] = useState([]);
 
-  const [serie, setSerie] = useState([]);
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function StationTimePlot({ color, stations }) {
       }
     }
   }, [station]);
- 
+
   useEffect(() => {
     const fetch = async () => {
       const data = await Axios.get(
@@ -34,15 +34,12 @@ export default function StationTimePlot({ color, stations }) {
       );
 
       setInfo(data.data.info);
-      //setSerie(data.data.data);
-    } 
+    }
 
     if (station && vari) {
       fetch();
     }
   }, [station, vari]);
-
-  console.log(info);
 
   return (
     <div className='w-full h-1/2 bg-stone-100 flex flex-row'>
@@ -64,7 +61,7 @@ export default function StationTimePlot({ color, stations }) {
           <div className='w-1/2'>
             <select
               value={vari}
-              onChange={(e) => {setVari(e.target.value)}}
+              onChange={(e) => { setVari(e.target.value) }}
               className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
             >
               {vars.map((option) => (
@@ -73,19 +70,51 @@ export default function StationTimePlot({ color, stations }) {
                 </option>)
               ))}
             </select>
-          </div> 
+          </div>
         </div>
+        {info && (
+          <div className='w-full flex flex-row h-1/6'>
+            <div className='w-1/3 block p-2 bg-slate-300  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>FROM</div>
+            <div className='w-2/3 block p-2  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>{info.from_d}</div>
+          </div>
+        )}
+        {info && (
+          <div className='w-full flex flex-row h-1/6'>
+            <div className='w-1/3 block p-2 bg-slate-400  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>p_value</div>
+            <div className='w-2/3 block p-2  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>{info.p_value}</div>
+          </div>
+        )} 
+        {info && (
+          <div className='w-full flex flex-row h-1/6'>
+            <div className='w-1/3 block p-2 bg-stone-500  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>trend</div>
+            <div className='w-2/3 block p-2  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>{info.trend}</div>
+          </div>
+        )}
+        {info && (
+          <div className='w-full flex flex-row h-1/6'>
+            <div className='w-1/3 block p-2 bg-amber-700  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>FILLED</div>
+            <div className='w-2/3 block p-2  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>{info.method_fill}</div>
+          </div>
+        )}
+        {info && (
+          <div className='w-full flex flex-row h-1/6'>
+            <div className='w-1/3 block p-2 bg-slate-300  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>TO</div>
+            <div className='w-2/3 block p-2  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300'>{info.to_d}</div>
+          </div>
+        )}
       </div>
       <div className='w-3/5'>
-        <PlotlyTime 
+        <PlotlyTime
           color={color}
+          stat={station}
+          varia={vari}
         />
       </div>
       <div className='w-1/5'>
-        <BoxPlot
-          width={window.innerWidth * 0.18}
-          height={window.innerHeight * 0.18}
-          color={'#69b3a2'}
+        <BoxPlotPlotly
+          color={color}
+          stat={station}
+          varia={vari}
         />
       </div>
     </div>

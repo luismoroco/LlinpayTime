@@ -2,31 +2,27 @@ import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import * as d3 from 'd3';
 
-const rawDataURL = 'https://raw.githubusercontent.com/plotly/datasets/master/2016-weather-data-seattle.csv';
-const test_rawURL = 'http://127.0.0.1:5000/get_csv_test'
-const xField = 'Date'; //xField
-const yField = 'Mean_TemperatureC'; //yField
-const filePath = '../data/2016-weather-data-seattle.csv';
-
-const selectorOptions = {
-  buttons: [
-    // ...
-  ],
-}; 
-
-function PlotlyTime({color}) {
+function PlotlyTime({color, stat, varia}) {
   const [data, setData] = useState([]);
-
+  
+  const xField = 'date'; 
+  var rawDataURL;
+  var yField; 
+ 
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await d3.csv(rawDataURL);
       const formattedData = prepData(fetchedData);
 
       setData(formattedData);
-    };
-
-    fetchData();
-  }, []);
+    }; 
+    
+    if (stat && varia) {
+      rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${stat}_${varia}.csv`;
+      yField = varia;
+      fetchData();
+    }
+  }, [stat, varia]);   
 
 
   function prepData(rawData) {
@@ -51,7 +47,7 @@ function PlotlyTime({color}) {
 
   const config = {
       displayModeBar: false,
-  };
+  }; 
 
   return (
       <div style={{ width: '100%', height: '100%', border: 'none' }}>
@@ -62,14 +58,13 @@ function PlotlyTime({color}) {
               height: 205,
               autosize: true,
               xaxis: {
-                rangeselector: selectorOptions,
                 rangeslider: {}
               },
               yaxis: {
                 fixedrange: true
               },
                 margin: {
-                    l: 20,
+                    l: 30,
                     r: 20,
                     b: 20,
                     t: 20
