@@ -1,85 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import Plot from 'react-plotly.js';
-import * as d3 from 'd3';
+import React, { useState } from 'react';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
-const rawDataURL = 'https://raw.githubusercontent.com/plotly/datasets/master/2016-weather-data-seattle.csv';
-const xField = 'Date';
-const yField = 'Mean_TemperatureC';
-const filePath = '../data/2016-weather-data-seattle.csv';
+const MainTimePlot = () => {
+  const [series, setSeries] = useState([]);
+  const [seriesCounter, setSeriesCounter] = useState(0);
 
-const selectorOptions = {
-    buttons: [
-        // ...
-    ],
+  const createRandomData = (now, max) => {
+    const data = [];
+    for (let i = 0; i < 100; i++) { 
+      data.push([now + i * 1000, Math.round(Math.random() * max)]);
+    }
+    return data; 
+  };
+ 
+  const createRandomSeries = (index) => { 
+    return {
+      name: `Series${index}`, 
+      data: createRandomData(Date.now(), 1e8)
+    };
+  }; 
+
+  const handleAddSeries = () => {
+    setSeriesCounter((prevCounter) => prevCounter + 1);
+    setSeries((prevSeries) => [...prevSeries, createRandomSeries(seriesCounter + 1)]);
+  };
+
+  const handleRemoveSeries = () => {
+    if (series.length > 0) {
+      const randomIndex = Math.floor(Math.random() * series.length);
+      setSeries((prevSeries) => prevSeries.filter((_, index) => index !== randomIndex));
+    }
+  };
+
+  const renderSeries = ({ name, data }) => {
+    return <HighchartsReact.LineSeries name={name} key={name} data={data} />;
+  };
+
+  return (
+    <div className="app" style={{ width: '99%', height: '100%' }}>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={{
+          title: {
+            text: 'Dynamically add/remove series'
+          },
+          legend: {
+            align: 'left',
+            title: {
+              text: 'Legend'
+            }
+          },
+          xAxis: {
+            type: 'datetime',
+            title: {
+              text: 'Time'
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Price'
+            }
+          },
+          series: series.map(({ name, data }) => ({ name, data }))
+        }}
+      />
+
+      <div className="btn-toolbar" role="toolbar">
+        <button className="btn btn-primary" onClick={handleAddSeries}>
+          Add line series
+        </button>
+        <button className="btn btn-danger" onClick={handleRemoveSeries}>
+          Remove line series
+        </button>
+      </div>
+    </div>
+  );
 };
 
-function MainPlotlyTime({color}) {
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const fetchedData = await d3.csv(rawDataURL);
-            //const csvData = await fs.promises.readFile(filePath, 'utf-8');
-            //const fetchedData = d3.csvParse(csvData);
-            const formattedData = prepData(fetchedData);
-
-            setData(formattedData);
-        };
-
-        fetchData();
-    }, []);
-
-
-    function prepData(rawData) {
-        const x = [];
-        const y = [];
-
-        rawData.forEach(function (datum, i) {
-            x.push(new Date(datum[xField]));
-            y.push(datum[yField]);
-        });
-
-        return [{
-            type: 'scatter',
-            mode: 'lines',
-            x: x,
-            y: y,
-            marker: {
-                color: color
-            }
-        }];
-    }
-
-    const config = {
-        displayModeBar: false,
-    };
-
-    return (
-        <div style={{ width: '100%', height: '100%', border: 'none' }}>
-            <Plot
-                data={data}
-                layout={{
-                    width: 820,
-                    height: 165,
-                    autosize: true,
-                    xaxis: {
-                        rangeselector: selectorOptions,
-                        rangeslider: {}
-                    },
-                    yaxis: {
-                        fixedrange: true
-                    },
-                    margin: {
-                        l: 20,
-                        r: 20,
-                        b: 20,
-                        t: 20
-                    }
-                }}
-                config={config}
-            />
-        </div>
-    );
-}
-
-export default MainPlotlyTime;
+export default MainTimePlot;

@@ -13,6 +13,12 @@ CREATE TABLE IF NOT EXISTS repo_val_mem (
   to_d VARCHAR(25)
 );
 
+CREATE TABLE IF NOT EXISTS nan_distribution (
+  id SERIAL PRIMARY KEY,
+  station VARCHAR(50) NOT NULL UNIQUE,
+  info TEXT
+); 
+
 CREATE TABLE IF NOT EXISTS task_cache (
   id SERIAL PRIMARY KEY,
   id_task_redis VARCHAR(50) NOT NULL,

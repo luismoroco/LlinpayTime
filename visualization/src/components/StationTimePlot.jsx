@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PlotlyTime from './PlotlyTime';
-import BoxPlot from './Box';
 import Axios from "axios";
 import BoxPlotPlotly from './BoxPlot';
+import axios from 'axios';
 
 export default function StationTimePlot({ color, stations }) {
   const [station, setStation] = useState("");
@@ -29,11 +29,19 @@ export default function StationTimePlot({ color, stations }) {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await Axios.get(
-        `http://127.0.0.1:5000/var_station/air-quality-madrid&28079008&PM10`
-      );
+      try {
+        const data = await Axios.get(
+          `http://127.0.0.1:5000/var_station/air-quality-madrid&${station}&${vari}`
+        );
+        
+        setInfo(data.data.info);
 
-      setInfo(data.data.info);
+        if (!data.data.state) {
+          setTimeout(fetch, 1000);
+        } 
+      } catch (error) {
+        console.log("PIPIPI");
+      }
     }
 
     if (station && vari) {

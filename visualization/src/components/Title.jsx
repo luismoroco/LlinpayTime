@@ -3,7 +3,7 @@ export default function Title(props) {
 
   return (
     <>
-      <h1 className={`font-extrabold text-center ` + `${style}`} >{title}</h1>
+      <h1 className={`font-extrabold text-center shadow-lg ` + `${style}`} >{title}</h1>
     </>
   )
 }

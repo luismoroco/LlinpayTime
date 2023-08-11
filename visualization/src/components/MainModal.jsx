@@ -27,7 +27,7 @@ const Modal = ({setMainRepo, modal, setModal}) => {
         setModal(false);
     };  
  
-    return (
+    return ( 
         <>
             {modal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">

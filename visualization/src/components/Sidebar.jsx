@@ -2,9 +2,9 @@ import Title from './Title'
 import { BarsArrowDownIcon } from '@heroicons/react/24/solid'
 import DateRangePicker from './RangeDatePicker';
 import Barchart from './BarChart';
-import RadialBarChartC from './RadialChart';
+import AreaChartC from './AreaChart';
 
-export default function Sidebar({ repository, setModal, stat_name, stat_var }) {
+export default function Sidebar({ repository, setModal, stat_name, stat_var, nam_var, nam_stat }) {
 
   const closeModal = () => {
     setModal(true);
@@ -26,15 +26,18 @@ export default function Sidebar({ repository, setModal, stat_name, stat_var }) {
               <div className='w-1/5 px-5'>
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-xl"
-                  onClick={closeModal}
+                  onClick={closeModal} 
                 >
                   <BarsArrowDownIcon className='w-7 h-7' />
                 </button>
               </div>
             </div>
+            <div className='w-full p-1 py-3'>
+              <DateRangePicker />
+            </div>
           </div>
           <div className='h-2/6'>
-            <RadialBarChartC />
+            <AreaChartC station={nam_stat} vari={nam_var} />
           </div>
           <div className='h-3/6 p-2 bg-slate-100'>
             <Barchart station_name={stat_name} data={stat_var} />

@@ -34,7 +34,7 @@ const Barchart = ({station_name, data}) => {
           fontWeight="bold"
           fontSize="16"
         >
-          {station_name}
+          {`${station_name}`}
         </text>
 
         <CartesianGrid />

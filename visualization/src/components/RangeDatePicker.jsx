@@ -9,16 +9,16 @@ const DateRangePicker = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="space-y-4 text-center">
-        <h2 className="text-2xl font-semibold">Select a Date Range</h2>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 items-center">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             selectsStart
             startDate={startDate}
-            endDate={endDate}
+            endDate={endDate} 
+            className='shadow text-center p-1'
           />
-          <span className="text-xl">to</span>
+          <span className="text-xl">TO</span>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -26,14 +26,8 @@ const DateRangePicker = () => {
             startDate={startDate}
             endDate={endDate}
             minDate={startDate}
+            className='shadow text-center p-1'
           />
-        </div>
-        <div>
-          {startDate && endDate && (
-            <p>
-              Selected Range: {startDate.toDateString()} - {endDate.toDateString()}
-            </p>
-          )}
         </div>
       </div>
     </div>
