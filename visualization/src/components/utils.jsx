@@ -22,9 +22,9 @@ export const getShape = (cont_len, total) => {
 export const circleIcon = (number, cont_len, total) => ({
   path: getShape(cont_len, total),
   fillColor: getFillColor(number),
-  fillOpacity: 1,
+  fillOpacity: 1, 
   strokeWeight: 2,
-  scale: 2,
+  scale: 2,  
 }); 
-
-export const spacing = "";
+ 
+export const spacing = ""; 

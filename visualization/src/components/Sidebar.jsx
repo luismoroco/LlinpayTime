@@ -33,7 +33,6 @@ export default function Sidebar({ repository, setModal, stat_name, stat_var }) {
               </div>
             </div>
           </div>
-
           <div className='h-2/6'>
             <RadialBarChartC />
           </div>

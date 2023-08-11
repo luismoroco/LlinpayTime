@@ -20,8 +20,6 @@ function PlotlyTime({color}) {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await d3.csv(rawDataURL);
-      //const csvData = await fs.promises.readFile(filePath, 'utf-8');
-      //const fetchedData = d3.csvParse(csvData);
       const formattedData = prepData(fetchedData);
 
       setData(formattedData);
@@ -60,8 +58,8 @@ function PlotlyTime({color}) {
         <Plot
             data={data}
             layout={{
-              width: 820,
-              height: 165,
+              width: 1050,
+              height: 205,
               autosize: true,
               xaxis: {
                 rangeselector: selectorOptions,

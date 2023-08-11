@@ -9,13 +9,13 @@ import TimeLocal from './components/TimeLocal';
 import DateRangePicker from './components/RangeDatePicker';
 import RadialBarChart from './components/RadialChart';
 import RadialBarChartC from './components/RadialChart';
-
+ 
 function App() {
   const [modal, setModal] = useState(true);
   const [repository, setRepository] = useState("air-quality");
 
   const [stations, setStations] = useState([]);
-  const [vars, setVars] = useState([]);
+  const [vars, setVars] = useState([]); 
 
   const [station, setStation] = useState("");
   const [stationName, setStationName] = useState("");
@@ -32,7 +32,7 @@ function App() {
     }
   
     fetch(); 
-  }, [repository]);
+  }, [repository]); 
 
   useEffect(() => {
     const info = stations.find(item => item.id === station);
@@ -40,13 +40,13 @@ function App() {
       setStationName(info.name);
       setStationBar(info.vars);
     }
-  }, [station])
-
+  }, [station]) 
  
-  const x = 0;
+
+  const x = 0; 
   
   const [variable, setVariable] = useState(null); 
-
+  
   return (
     <div className="w-full h-full flex flex-col bg-slate-300" style={{ height: '100vh', width: '100vw' }}>
       <Modal setMainRepo={setRepository} modal={modal} setModal={setModal} />
@@ -63,7 +63,7 @@ function App() {
           <Map stationes={stations} setStat={setStation} setVar={setVariable} repository={repository} variables={vars} />
         </div>
         <div className="w-3/4 flex flex-col">
-          <StationMapper />
+          <StationMapper stations_inf={stations}/>
         </div>
       </div>
     </div>
@@ -71,30 +71,3 @@ function App() {
 }
 
 export default App;
-
-/**
-
-  return (
-    <div className="w-full h-full flex flex-col bg-amber-900" style={{ height: '100vh', width: '100vw' }}>
-      <Modal />
-      <div className="w-full h-2/3 flex flex-row">
-        <div className="w-1/4 bg-gray-100">
-          <Sidebar />
-        </div>
-        <div className="w-3/4">
-          <PlotlyTime />
-        </div>
-      </div>
-      <div className="w-full h-1/3 flex flex-row">
-        <div className="w-1/4 bg-gray-300">
-          <Map setStat={setStation} setVar={setVariable} />
-        </div>
-        <div className="w-3/4 flex flex-col">
-          <StationMapper stat={station} vari={variable} />
-        </div>
-      </div>
-    </div>
-  );
-
-
- */

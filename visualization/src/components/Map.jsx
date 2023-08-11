@@ -33,11 +33,11 @@ export default function Map({setStat, setVar, repository, variables, stationes})
         <div className='w-4/5 justify-self-center'>
           <Title
             title={'Stations'}
-            style={'text-2xl'}
-          />
-        </div>
+            style={'text-2xl'} 
+          />    
+        </div>  
         <div className='w-1/5'>
-          <select
+          <select 
             value={selectedOption}
             onChange={handleChangeContaminant}
             className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
@@ -45,10 +45,10 @@ export default function Map({setStat, setVar, repository, variables, stationes})
             {variables.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
-              </option>
-            ))}  
+              </option>  
+            ))}   
           </select>
-        </div>
+        </div>  
       </div>
       <div className='w-full flex flex-row border-black border-2'>
         <div className='w-1/4 bg-white p-0.5 text-center font-medium'> {'NA'} </div>
