@@ -8,7 +8,7 @@ from flask import jsonify, send_file, request
 from flask_cors import CORS
 
 from core import WebServerEngine, jsonAdapter
-from core.utils import handle_repo_stat_val_test, transform
+from core.utils import handle_repo_stat_val_test, transform, load_csv
 from manage import conn, data, volume
 
 load_dotenv()
@@ -78,8 +78,9 @@ def repository(id: str):
 def enqueue_task(req: List[str], id_file: str):
     res = handle_repo_stat_val_test(volume.get_path_base_dir(), req)
 
-    query = "UPDATE repo_val_mem SET method_fill = %s, p_value = %s, trend = %s, path_out = %s, status_task = %s WHERE id_rep_val = %s;"
-    vals = (res["method"], res["p-value"], res["trend"], res["path"], True, id_file)
+    query = "UPDATE repo_val_mem SET method_fill = %s, p_value = %s, trend = %s, path_out = %s, status_task = %s, from_t = %s, to_d = %s WHERE id_rep_val = %s;"
+    vals = (res["method"], res["p-value"], res["trend"],
+            res["path"], True, res["from_d"], res["to_d"], id_file)
     cur.execute(query, vals)
     conn.commit()
 
@@ -98,15 +99,25 @@ def get_repo_var(repo_stat_id: str):
         row = cur.fetchone()
 
         if row:
+            #data = []
+            #if row[7] == True:
+            #    df = load_csv(row[6])
+            #    data = df.to_dict(orient='records')
+
             res_dict = {
-                "id": row[0],
-                "id_task_redis": row[1],
-                "id_rep_val": row[2],
-                "method_fill": row[3],
-                "p_value": row[4],
-                "trend": row[5],
-                "path_out": row[6],
-                "status_task": row[7],
+                "info": {
+                    "id": row[0],
+                    "id_task_redis": row[1],
+                    "id_rep_val": row[2],
+                    "method_fill": row[3],
+                    "p_value": row[4],
+                    "trend": row[5],
+                    "path_out": row[6],
+                    "status_task": row[7],
+                    "from_d": row[8],
+                    "to_d": row[9],
+                },
+                #"data": data,
             }
 
             res = jsonify(res_dict)

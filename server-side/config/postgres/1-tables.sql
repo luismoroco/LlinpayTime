@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS repo_val_mem (
   p_value FLOAT,
   trend FLOAT,
   path_out VARCHAR(255),
-  status_task BOOLEAN DEFAULT FALSE
+  status_task BOOLEAN DEFAULT FALSE,
+  from_t VARCHAR(25),
+  to_d VARCHAR(25)
 );
 
 CREATE TABLE IF NOT EXISTS task_cache (

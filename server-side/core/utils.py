@@ -17,6 +17,11 @@ def get_df_from_abs_path(path: str) -> DataFrame:
 
 
 @collect_ram_after
+def load_csv(path: str) -> DataFrame:
+    return read_csv(path)
+
+
+@collect_ram_after
 def transform(path) -> List[Dict]:
     df = get_df_from_abs_path(path)
 
@@ -85,6 +90,8 @@ def handle_repo_stat_val_test(path_base: str, req: List[str]) -> Dict:
         "method": METHOD_FILL,
         "trend": "{:.8f}".format(apply_linear_regression(x, y)),
         "p-value": "{:.8f}".format(apply_fuller_test(_df[req[2]])),
+        "from_d": df["date"].min(),
+        "to_d": df["date"].max(),
     }
 
     df.to_csv(_out_path, index=False)
