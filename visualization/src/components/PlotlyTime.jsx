@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 function PlotlyTime({ color, stat, varia }) {
   const [data, setData] = useState([]);
-  const [nanIndices, setNanIndices] = useState([]); // Track indices of NaN values
+  const [nanIndices, setNanIndices] = useState([]); 
   
   const xField = 'date';
   var rawDataURL;

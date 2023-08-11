@@ -5,6 +5,7 @@ import Map from './components/Map';
 import Modal from "./components/MainModal.jsx";
 import Axios from "axios";
 import MainTimePlot from './components/MainTimePlot';
+import MUltiSeries from './components/MultiSeries';
 
 function App() {
   const [modal, setModal] = useState(true);
