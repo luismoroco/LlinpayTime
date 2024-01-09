@@ -9,7 +9,7 @@ function PlotlyTime({ color, stat, varia }) {
   const xField = 'date';
   var rawDataURL;
   var yField;
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await d3.csv(rawDataURL);
@@ -34,12 +34,12 @@ function PlotlyTime({ color, stat, varia }) {
       x.push(new Date(datum[xField]));
       y.push(datum[yField]);
 
-      if (isNaN(parseFloat(datum[yField]))) { // Check for NaN values
-        nanIndices.push(i);
-      }
+      // if (isNaN(parseFloat(datum[yField]))) { // Check for NaN values
+      //   nanIndices.push(i);
+      // }
     });
 
-    setNanIndices(nanIndices); // Update the nanIndices state
+    // setNanIndices(nanIndices); // Update the nanIndices state
 
     return [
       {
@@ -47,9 +47,9 @@ function PlotlyTime({ color, stat, varia }) {
         mode: 'lines',
         x: x,
         y: y,
-        marker: {
-          color: color,
-        },
+        // marker: {
+        //   color: color,
+        // },
       },
     ];
   }
@@ -58,25 +58,25 @@ function PlotlyTime({ color, stat, varia }) {
     displayModeBar: false,
   };
 
-  const shapes = nanIndices.map((index) => ({
-    type: 'line',
-    x0: data[0].x[index],
-    x1: data[0].x[index],
-    y0: 0,
-    y1: 1,
-    xref: 'x',
-    yref: 'paper',
-    line: {
-      color: 'red',
-      width: 1,
-      dash: 'dash',
-    },
-  }));
+  // const shapes = nanIndices.map((index) => ({
+  //   type: 'line',
+  //   x0: data[0].x[index],
+  //   x1: data[0].x[index],
+  //   y0: 0,
+  //   y1: 1,
+  //   xref: 'x',
+  //   yref: 'paper',
+  //   line: {
+  //     color: 'red',
+  //     width: 1,
+  //     dash: 'dash',
+  //   },
+  // }));
  
   return (
     <div style={{ width: '100%', height: '100%', border: 'none' }}>
       <Plot
-        data={data}
+        data={data} 
         layout={{
           width: 1050,
           height: 205, 
@@ -86,11 +86,11 @@ function PlotlyTime({ color, stat, varia }) {
           },
           yaxis: {
             fixedrange: true,
-          },
+          }, 
           margin: {
             l: 30,
-            r: 20,
-            b: 20,
+            r: 20, 
+            b: 20,   
             t: 20,
           }, 
           //shapes: shapes, 

@@ -7,7 +7,7 @@ up:
 	sudo docker-compose up 
 
 .PHONY: down
-down:
+down: 
 	sudo docker-compose down 
 
 .PHONY: venvp

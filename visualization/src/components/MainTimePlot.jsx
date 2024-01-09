@@ -43,7 +43,7 @@ const MainTimePlot = () => {
       }
     });
 
-    setNanIndices(nanIndices); 
+    setNanIndices(nanIndices);  
 
     return data;
   }

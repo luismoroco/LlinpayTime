@@ -12,12 +12,12 @@ function App() {
   const [repository, setRepository] = useState("air-quality");
 
   const [stations, setStations] = useState([]);
-  const [vars, setVars] = useState([]);
+  const [vars, setVars] = useState([]); 
 
   const [station, setStation] = useState("");
   const [stationName, setStationName] = useState("");
   const [stationBar, setStationBar] = useState([]);
-
+ 
   useEffect(() => {
     const fetch = async () => {
       const data = await Axios.get(
@@ -26,22 +26,22 @@ function App() {
 
       setStations(data.data.info);
       setVars(data.data.vars);
-    }
+    } 
 
     fetch();
-  }, [repository]);
+  }, [repository]); 
 
   useEffect(() => {
     const info = stations.find(item => item.id === station);
     if (info) {
       setStationName(info.name);
       setStationBar(info.vars);
-    }
+    } 
   }, [station])
-
-
+  
+   
   const x = 0;
-
+ 
   const [variable, setVariable] = useState(null);
 
   return (
@@ -58,8 +58,8 @@ function App() {
               <span className='text-blue-950'>{variable}</span>
             </div> 
           </div>
-          <div className='h-5/6 bg-slate-900'>
-            <MainTimePlot />
+          <div className='h-5/6 '>
+            <MainTimePlot /> 
           </div>
         </div>
       </div> 

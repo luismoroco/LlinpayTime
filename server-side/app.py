@@ -13,6 +13,8 @@ from core import WebServerEngine, jsonAdapter
 from core.utils import handle_repo_stat_val_test, transform, load_csv
 from manage import conn, data, volume
 
+from sklearn.impute import SimpleImputer
+
 load_dotenv()
 
 cur = conn.cursor()
@@ -209,6 +211,12 @@ def get_test():
         "-madrid_28079004_PM10.csv"
     )
     return send_file(file, as_attachment=True)
+
+@app.route("/impute/<string:path_name_imp>", methods=["GET"])
+def get_imputation(path: str):
+    req = path.split("$")
+    df = pd.read_csv(req[0])
+    df['missing'] = df[req[1]].apply(lambda x: 0 if pd.isna(x) else 1)
 
 
 if __name__ == "__main__":
