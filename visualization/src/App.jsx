@@ -59,7 +59,7 @@ function App() {
             </div> 
           </div>
           <div className='h-5/6 '>
-            <MainTimePlot /> 
+            <MainTimePlot station={station} variable={variable}/> 
           </div>
         </div>
       </div> 

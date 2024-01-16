@@ -48,20 +48,22 @@ def nan_distribut(id: str):
         return res
 
     path = volume.get_path_base_dir()
-    path = os.path.join(path, "air-quality-madrid",
-                        "input", "data", f"{id}.csv")
+    path = os.path.join(path, "air-quality-madrid", "input", "data", f"{id}.csv")
 
     df = pd.read_csv(path, parse_dates=["date"])
-    grouped = df.groupby(df['date'].dt.year).apply(lambda x: x.isna().sum())
+    grouped = df.groupby(df["date"].dt.year).apply(lambda x: x.isna().sum())
 
-    resu = {'identifier': f"{id}", 'nan_counts': []}
+    resu = {"identifier": f"{id}", "nan_counts": []}
     for col in df.columns[1:]:
         nan_counts = grouped[col]
         if not all(nan_counts == len(df)):
-            col_nan_counts = [{'year': year, 'nan_count': nan_count}
-                              for year, nan_count in zip(grouped.index, nan_counts)]
-            resu['nan_counts'].append(
-                {'variable': col, 'nan_counts_by_year': col_nan_counts})
+            col_nan_counts = [
+                {"year": year, "nan_count": nan_count}
+                for year, nan_count in zip(grouped.index, nan_counts)
+            ]
+            resu["nan_counts"].append(
+                {"variable": col, "nan_counts_by_year": col_nan_counts}
+            )
 
     info = json.dumps(resu)
     query = "INSERT INTO nan_distribution (station, info) VALUES (%s, %s);"
@@ -123,8 +125,16 @@ def enqueue_task(req: List[str], id_file: str):
     res = handle_repo_stat_val_test(volume.get_path_base_dir(), req)
 
     query = "UPDATE repo_val_mem SET method_fill = %s, p_value = %s, trend = %s, path_out = %s, status_task = %s, from_t = %s, to_d = %s WHERE id_rep_val = %s;"
-    vals = (res["method"], res["p-value"], res["trend"],
-            res["path"], True, res["from_d"], res["to_d"], id_file)
+    vals = (
+        res["method"],
+        res["p-value"],
+        res["trend"],
+        res["path"],
+        True,
+        res["from_d"],
+        res["to_d"],
+        id_file,
+    )
     cur.execute(query, vals)
     conn.commit()
 
@@ -156,7 +166,7 @@ def get_repo_var(repo_stat_id: str):
                     "from_d": row[8],
                     "to_d": row[9],
                 },
-                "state": row[7]
+                "state": row[7],
             }
 
             res = jsonify(res_dict)
@@ -172,12 +182,8 @@ def get_repo_var(repo_stat_id: str):
         conn.commit()
 
         res_dict = {
-            "info": {
-                "id": task.id,
-                "status": "Scheduled",
-                "status_task": False
-            },
-            "state": False
+            "info": {"id": task.id, "status": "Scheduled", "status_task": False},
+            "state": False,
         }
 
         res = jsonify(res_dict)
@@ -212,11 +218,12 @@ def get_test():
     )
     return send_file(file, as_attachment=True)
 
+
 @app.route("/impute/<string:path_name_imp>", methods=["GET"])
 def get_imputation(path: str):
     req = path.split("$")
     df = pd.read_csv(req[0])
-    df['missing'] = df[req[1]].apply(lambda x: 0 if pd.isna(x) else 1)
+    df["missing"] = df[req[1]].apply(lambda x: 0 if pd.isna(x) else 1)
 
 
 if __name__ == "__main__":

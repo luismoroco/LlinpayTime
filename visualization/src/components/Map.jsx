@@ -13,16 +13,16 @@ export default function Map({setStat, setVar, repository, variables, stationes})
 
   const handleChangeContaminant = (event) => {
     setSelectedOption(event.target.value);
-    setVar(event.target.value); 
-  }; 
+    setVar(event.target.value);  
+  };   
  
-  const handleChangeStation = (id, name) => { 
+  const handleChangeStation = (id, name) => {  
     setSelectedStation({id, name});
     setStat(id);
   }
-
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "",
+ 
+  const { isLoaded } = useLoadScript({ 
+    googleMapsApiKey: "AIzaSyDlW6tNapn0F4qjXVDOY_bnlQ9YmxNFcDw",
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 

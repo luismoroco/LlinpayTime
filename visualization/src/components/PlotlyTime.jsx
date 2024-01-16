@@ -16,7 +16,7 @@ function PlotlyTime({ color, stat, varia }) {
       const formattedData = prepData(fetchedData);
 
       setData(formattedData);
-    };
+    }; 
  
     if (stat && varia) {
       rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${stat}_${varia}.csv`;

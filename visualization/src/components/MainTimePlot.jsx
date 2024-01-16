@@ -3,12 +3,13 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as d3 from 'd3';
 
-const MainTimePlot = () => {
+
+export default function MainTimePlot({station, variable}) {
   const xField = 'date';
-  const stat = "28079008"
+  //const stat = "28079008"
   var rawDataURL;
-  var yField;
-  var varia = "CO";
+  var yField; 
+  //var varia = "CO";
 
   const [data, setData] = useState([]);
   const [nanIndices, setNanIndices] = useState([]); 
@@ -21,51 +22,59 @@ const MainTimePlot = () => {
       const fetchedData = await d3.csv(rawDataURL);
       const formattedData = prepData(fetchedData);
 
-      setData(formattedData);
-    };
+      setData(formattedData); 
+    }; 
  
-    if (stat && varia) {
-      rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${stat}_${varia}.csv`;
-      yField = varia;
+    if (station && variable) {
+      rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${station}_${variable}.csv`;
+      yField = variable;
       fetchData();
     }
-  }, [stat, varia]); 
 
+  }, [station, variable]); 
+ 
   function prepData(rawData) {
     const data = [];
     const nanIndices = [];
 
     rawData.forEach(function (datum, i) {
-      data.push(new Date(datum[xField]), datum[yField]);
-
-      if (isNaN(parseFloat(datum[yField]))) { 
-        nanIndices.push(i);
-      }
+      data.push([new Date(datum[xField]).getTime(), parseFloat(datum[yField])]);
     });
 
-    setNanIndices(nanIndices);  
-
-    return data;
-  }
-
-
-
-
-
-  const createRandomData = (now, max) => {
-    const data = [];
-    for (let i = 0; i < 100; i++) { 
-      data.push([now + i * 1000, Math.round(Math.random() * max)]);
-    }
-    return data; 
-  };
+    return data;  
+  }   
  
+  const createRandomData = (now, max) => {
+    const data_random = []; 
+    for (let i = 0; i < 15000; i++) { 
+      data_random.push([now + i * 1000, Math.round(Math.random() * max)]);
+    }
+    return data_random; 
+  };   
+  
   const createRandomSeries = (index) => { 
+    if (!data) {
+      console.log("NO EXISTE AÚN!")
+      return {
+        name: `Series${index}`,
+        data: createRandomData(Date.now(), 1e8)
+      }
+    }
+
+
     return {
       name: `Series${index}`, 
-      data: createRandomData(Date.now(), 1e8)
+      data: data
     };
   }; 
+
+  useEffect(() => {
+    console.log("DATA MAIN SERIES", data.length, data[1]);
+    
+    if (data.length > 0) {
+      console.log("LLEGARON! :'V")
+    }
+  }, [data]);
 
   const handleAddSeries = () => {
     setSeriesCounter((prevCounter) => prevCounter + 1);
@@ -86,7 +95,7 @@ const MainTimePlot = () => {
         highcharts={Highcharts}
         options={{
           title: {
-            text: 'Dynamically add/remove series'
+            text: 'General Time Series VIEW'
           },
           legend: {
             align: 'left', 
@@ -96,7 +105,7 @@ const MainTimePlot = () => {
           },
           xAxis: {
             type: 'datetime',
-            title: {
+            title: { 
               text: 'Time'
             }
           },
@@ -120,5 +129,3 @@ const MainTimePlot = () => {
     </div>
   );
 };
-
-export default MainTimePlot;

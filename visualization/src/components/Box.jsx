@@ -11,7 +11,7 @@ const BoxPlot = ({ width, height, color, data }) => {
     // calculate the inner width and height considering margins
     var innerWidth = width - margin.left - margin.right;
     var innerHeight = height - margin.top - margin.bottom;
-
+ 
     // append the svg object to the body of the page
     var svg = d3.select(svgRef.current)
       .selectAll("svg") // Select existing svg elements if any
