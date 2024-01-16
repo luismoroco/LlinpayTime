@@ -61,7 +61,6 @@ export default function MainTimePlot({station, variable}) {
       }
     }
 
-
     return {
       name: `Series${index}`, 
       data: data

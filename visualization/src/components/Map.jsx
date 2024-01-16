@@ -22,7 +22,7 @@ export default function Map({setStat, setVar, repository, variables, stationes})
   }
  
   const { isLoaded } = useLoadScript({ 
-    googleMapsApiKey: "AIzaSyDlW6tNapn0F4qjXVDOY_bnlQ9YmxNFcDw",
+    googleMapsApiKey: "",
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 
