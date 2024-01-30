@@ -15,14 +15,14 @@ export default function Map({setStat, setVar, repository, variables, stationes})
     setSelectedOption(event.target.value);
     setVar(event.target.value);  
   };   
- 
+  
   const handleChangeStation = (id, name) => {  
     setSelectedStation({id, name});
     setStat(id);
-  }
+  } 
  
   const { isLoaded } = useLoadScript({ 
-    googleMapsApiKey: "",
+    googleMapsApiKey: "", 
   });
   const center = useMemo(() => ({ lat: 40.423852777777775, lng: -3.712247222222224 }), []);
 

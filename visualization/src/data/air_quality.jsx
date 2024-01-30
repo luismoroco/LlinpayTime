@@ -3,7 +3,7 @@ export const stations = [
     id: 28079004,
     name: "Pza. de Espa\u00f1a",
     addres: "Plaza de Espa\u00f1a",
-    lng: -3.712247222222224,
+    lng: -3.712247222222224, 
     lat: 40.423852777777775,
     elevation: 635,
     num_cont: 6,

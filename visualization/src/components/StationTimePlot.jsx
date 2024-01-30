@@ -16,17 +16,17 @@ export default function StationTimePlot({ color, stations }) {
       setStation(stations[0].id);
       setVars(stations[0].vars)
     }
-  }, [stations]);
-
+  }, [stations]); 
+  
   useEffect(() => {
     if (station && stations) {
       const item = stations.find(x => x.id === station);
       if (item) {
-        setVars(item.vars);
+        setVars(item.vars); 
       }
-    }
-  }, [station]);
-
+    }  
+  }, [station]);   
+  
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -35,13 +35,13 @@ export default function StationTimePlot({ color, stations }) {
         );
         
         setInfo(data.data.info);
-
-        if (!data.data.state) {
-          setTimeout(fetch, 1000);
-        } 
+        //setTimeout(fetch, 1000);  
       } catch (error) {
         console.log("PIPIPI");
       }
+      if (!data.data.state) {  
+        setTimeout(fetch, 1000);
+      } 
     }
 
     if (station && vari) {

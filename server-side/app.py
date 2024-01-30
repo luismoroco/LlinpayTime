@@ -3,6 +3,9 @@ from typing import List
 import json
 import os
 import pandas as pd
+import time
+import numpy as np
+import gc 
 
 from celery import Celery
 from dotenv import load_dotenv
@@ -141,10 +144,59 @@ def enqueue_task(req: List[str], id_file: str):
     return f"{req[0]} with {req[1]} preprocessed -> OK"
 
 
+def impute_time_series_method(df: pd.DataFrame, method: str) -> pd.DataFrame:
+    df['mask'] = (~np.isnan(df['data'])).astype(float)
+    
+    if method == "NEAREST_NEIGHBOR":
+        df.interpolate(method="nearest", inplace=True)
+    if method == "LINEAR_INTERPOLATION":
+        df.interpolate(method="linear", inplace=True)
+    if method == "SPLINE_INTERPOLATION":
+        df.interpolate(method='spline', order=2, inplace=True)
+
+    df = df[df["mask"] == 0]
+         
+    return df.to_json(orient="records")
+
+
+@app.route("/imputation/<string:repo_stat_id>/<string:imp_method>", methods=["GET"])
+def impute_time_series(repo_stat_id: str, imp_method: str):
+    req = repo_stat_id.split("&")
+    id_file = f"{req[0]}_{req[1]}_{req[2]}.csv"
+
+    if imp_method not in ["NEAREST_NEIGHBOR", "LINEAR_INTERPOLATION", "SPLINE_INTERPOLATION"]:
+        return jsonify({
+            "state": False,
+            "data": [] 
+        }) 
+ 
+    try:
+        df = pd.read_csv(os.path.join("volume", "air-quality-madrid", "load", id_file))
+        if not df:
+            return jsonify({
+                "state": False,
+                "data": []
+            })
+        
+        data = impute_time_series_method(df, imp_method)
+        gc.collect()
+        return jsonify({
+            "state": True,
+            "data": data
+        })
+
+    except:
+        return jsonify({
+            "state": False,
+            "data": []
+        })
+
 @app.route("/var_station/<string:repo_stat_id>", methods=["GET"])
 def get_repo_var(repo_stat_id: str):
     req = repo_stat_id.split("&")
     id_file = f"{req[0]}_{req[1]}_{req[2]}.csv"
+
+    print("REQUEST (VAR_STATION) ---->", id_file)
 
     if req[0] in volume.get_repositories():
         query = "SELECT * FROM repo_val_mem WHERE id_rep_val = %s;"

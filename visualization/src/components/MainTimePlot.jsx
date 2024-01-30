@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as d3 from 'd3';
+import Axios from "axios";
 
 
 export default function MainTimePlot({station, variable}) {
@@ -16,19 +17,22 @@ export default function MainTimePlot({station, variable}) {
 
   const [series, setSeries] = useState([]);
   const [seriesCounter, setSeriesCounter] = useState(0);
+
+  const [imputationMethod, setImputationMethod] = useState("")
  
   useEffect(() => {
     const fetchData = async () => { 
       const fetchedData = await d3.csv(rawDataURL);
-      const formattedData = prepData(fetchedData);
+      const formattedData = prepData(fetchedData);  
 
-      setData(formattedData); 
+      setData(formattedData);   
     }; 
  
     if (station && variable) {
       rawDataURL = `https://raw.githubusercontent.com/luismoroco/LlinpayTime/main/server-side/load/air-quality-madrid/${station}_${variable}.csv`;
       yField = variable;
       fetchData();
+      setSeries([])
     }
 
   }, [station, variable]); 
@@ -54,7 +58,7 @@ export default function MainTimePlot({station, variable}) {
   
   const createRandomSeries = (index) => { 
     if (!data) {
-      console.log("NO EXISTE AÚN!")
+      //console.log("NO EXISTE AÚN!")
       return {
         name: `Series${index}`,
         data: createRandomData(Date.now(), 1e8)
@@ -68,10 +72,10 @@ export default function MainTimePlot({station, variable}) {
   }; 
 
   useEffect(() => {
-    console.log("DATA MAIN SERIES", data.length, data[1]);
+    //console.log("DATA MAIN SERIES", data.length, data[1]);
     
-    if (data.length > 0) {
-      console.log("LLEGARON! :'V")
+    if (data.length > 0) { 
+      //console.log("LLEGARON! :'V")
     }
   }, [data]);
 
@@ -81,23 +85,54 @@ export default function MainTimePlot({station, variable}) {
   };
 
   const handleRemoveSeries = () => {
-    if (series.length > 0) {
-      const randomIndex = Math.floor(Math.random() * series.length);
-      setSeries((prevSeries) => prevSeries.filter((_, index) => index !== randomIndex));
-    }
+    setSeries([])
+    //if (series.length > 0) {
+    //  const randomIndex = Math.floor(Math.random() * series.length);
+    //  setSeries((prevSeries) => prevSeries.filter((_, index) => index !== randomIndex));
+    //} 
   };
+
+  const handleImputationApplying = async (e) => {
+    setImputationMethod(e.target.value); 
+   
+    if (imputationMethod && station && variable) {
+      try {
+        const data = await Axios.get(
+          `http://127.0.0.1:5000/imputation/air-quality-madrid&${station}&${variable}/${imputationMethod}`
+        ); 
+        
+        console.log("DATAAAAAAAAA------->", data)
+ 
+        if (data.data.state) {
+          setSeriesCounter((prevCounter) => prevCounter + 1);
+          setSeries((prevSeries) => [...prevSeries, {
+            name: `${imputationMethod}`, 
+            data: prepData(data)
+          }]);
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  const impMethods = [
+    {id: 1, name : "NEAREST_NEIGHBOR"},
+    {id: 2, name : "LINEAR_INTERPOLATION"},
+    {id: 3, name : "SPLINE_INTERPOLATION"} 
+  ]
 
 
   return (
     <div className="app" style={{ width: '99%', height: '100%' }}>
       <HighchartsReact
-        highcharts={Highcharts}
+        highcharts={Highcharts}  
         options={{
           title: {
             text: 'General Time Series VIEW'
           },
           legend: {
-            align: 'left', 
+            align: 'left',  
             title: {
               text: 'Legend'
             }
@@ -105,7 +140,7 @@ export default function MainTimePlot({station, variable}) {
           xAxis: {
             type: 'datetime',
             title: { 
-              text: 'Time'
+              text: 'Time' 
             }
           },
           yAxis: {
@@ -119,11 +154,27 @@ export default function MainTimePlot({station, variable}) {
 
       <div className="btn-toolbar" role="toolbar">
         <button className="btn btn-primary" onClick={handleAddSeries}>
-          Add line series
+          Load Dataset
         </button>
         <button className="btn btn-danger" onClick={handleRemoveSeries}>
-          Remove line series
+          Clear Series
         </button>
+      </div> 
+      <div>
+        <h1>SELECT A IMPUTATION METHOD</h1>
+        <div className='w-1/2'>
+            <select
+              className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+              value={imputationMethod}
+              onChange={handleImputationApplying}
+            >
+              {impMethods.map((option) => (
+                <option key={option.id} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
       </div>
     </div>
   );
